@@ -186,12 +186,12 @@ footer{color:rgba(255,255,255,.72);font-size:12px;margin-top:26px;line-height:1.
 </head>
 <body>
 <div class="wrap">
-  <div class="bar"><span class="logo">Ads <i>Wrapped</i></span><span class="r"><span class="by">proiect studențesc · AdVenture 2027</span><button id="snd" aria-label="Sunet pornit/oprit">🔊</button></span></div>
+  <div class="bar"><span class="logo">AdVenture <i>2027</i></span><span class="r"><span class="by">proiect studențesc</span><button id="snd" aria-label="Sunet pornit/oprit">🔊</button></span></div>
 
   <main class="game" id="game">
     <section class="panel" id="panel">
       <div id="intro">
-        <div class="kick">Ads Wrapped · un joc de 2 minute</div>
+        <div class="kick">Un joc de 2 minute</div>
         <h1>Reporterul<br><em>de buzunar</em></h1>
         <p class="lead">E reporter, are 0 € buget și o singură mâncare: <b>reclamele</b>. Ține-l în viață până publică știrea.</p>
         <label class="nm">Cum îl cheamă?<input id="name" maxlength="12" placeholder="Mitică" autocomplete="off" spellcheck="false"></label>
@@ -229,7 +229,7 @@ footer{color:rgba(255,255,255,.72);font-size:12px;margin-top:26px;line-height:1.
   </main>
 
   <article id="article" hidden></article>
-  <footer>Reporterul de buzunar · concept de campanie Ads Wrapped, proiect studențesc pentru AdVenture 2027. Personajul, reclamele și ziarul sunt fictive.</footer>
+  <footer>Reporterul de buzunar · joc de campanie, proiect studențesc AdVenture 2027. Personajul, reclamele și ziarul sunt fictive.</footer>
 </div>
 
 <div class="ad" id="ad" hidden role="dialog" aria-modal="true" aria-label="Reclamă">
@@ -624,7 +624,7 @@ function result(ok){
     : "S-a angajat la o pagină de clickbait. Primul titlu: „Nu o să-ți vină să crezi ce a făcut acest reporter”.";
   $("rbox").innerHTML = `
     <div class="card ${ok ? "ok" : "fail"}" id="card">
-      <div class="cl"><span>REPORTERUL DE BUZUNAR</span><span>ADS WRAPPED</span></div>
+      <div class="cl"><span>REPORTERUL DE BUZUNAR</span><span>POCKET · PRESS</span></div>
       <div class="mini">${cardScene(ok)}</div>
       <h2>${h}</h2>
       <p>${p}</p>

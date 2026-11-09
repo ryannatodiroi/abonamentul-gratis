@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cât costă o știre?</title>
-<meta name="description" content="Ghicește prețul a 5 lucruri fără de care o știre nu apare. Apoi vezi cine a plătit nota. Un joc de 1 minut.">
+<meta name="description" content="Ghicește prețul a 5 lucruri fără de care o știre nu apare. Apoi vezi cine plătește nota. Un joc de 1 minut.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Cât costă o știre?">
-<meta property="og:description" content="Ghicește prețul a 5 lucruri fără de care o știre nu apare. Apoi vezi cine a plătit nota. Un joc de 1 minut.">
+<meta property="og:description" content="Ghicește prețul a 5 lucruri fără de care o știre nu apare. Apoi vezi cine plătește nota. Un joc de 1 minut.">
 <meta property="og:url" content="https://ryannatodiroi.github.io/reporterul-de-buzunar/cat-costa/">
 <meta property="og:image" content="https://ryannatodiroi.github.io/reporterul-de-buzunar/cat-costa/og.png">
 <meta property="og:image:width" content="1200">
@@ -75,10 +75,11 @@ input[type=range]:disabled::-webkit-slider-thumb{cursor:default}
 .real{position:absolute;top:-14px;width:4px;height:44px;background:var(--blue);border-radius:2px;transform:translateX(-50%);animation:drop .35s ease-out}
 .real span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:var(--blue);color:var(--white);font:700 12px var(--disp);padding:3px 8px;border-radius:999px;white-space:nowrap;margin-bottom:4px}
 @keyframes drop{from{transform:translateX(-50%) translateY(-14px);opacity:0}}
-.fb{margin-top:6px;min-height:58px}
+.fb{margin-top:6px;min-height:58px;margin-bottom:12px}
 .fb b{display:block;font:800 22px var(--disp);letter-spacing:-.01em}
 .fb span{font-size:15.5px;line-height:1.4}
 .fb .good{color:var(--coral)}
+.fb .src{display:block;margin-top:8px;font-size:13.5px;line-height:1.4;background:var(--pinkl);border-radius:12px;padding:8px 11px}
 .act{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
 
 /* final */
@@ -130,15 +131,16 @@ input[type=range]:disabled::-webkit-slider-thumb{cursor:default}
 .how{display:none;margin-top:14px;font-size:15px;line-height:1.5;background:var(--pinkl);border-radius:16px;padding:12px 14px;max-width:60ch}
 .how.open{display:block}
 @media(max-width:700px){.acols{grid-template-columns:1fr}#article{padding:22px 18px;border-radius:24px}}
-footer{margin-top:30px;font-size:12.5px;line-height:1.5;opacity:.8}
+footer{margin-top:30px;font-size:12.5px;line-height:1.6;opacity:.85}
+footer a{color:inherit}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
-    <span class="logo">Ads<i>Wrapped</i></span>
-    <span class="r"><span class="by">proiect studențesc · AdVenture 2027</span><button id="snd" aria-label="Sunet pornit/oprit">🔊</button></span>
+    <span class="logo">AdVenture<i>2027</i></span>
+    <span class="r"><span class="by">proiect studențesc</span><button id="snd" aria-label="Sunet pornit/oprit">🔊</button></span>
   </header>
 
   <main class="layout" id="game">
@@ -154,25 +156,36 @@ footer{margin-top:30px;font-size:12.5px;line-height:1.5;opacity:.8}
         <div class="rc-hr"></div>
         <div class="rc-f">MULȚUMIM CĂ NU DAI SKIP!</div>
         <div class="bar" aria-hidden="true"></div>
-        <div class="rc-note">Prețuri estimate, rotunjite, pentru joc.</div>
+        <div class="rc-note">Prețuri estimate, medii europene, rotunjite.</div>
       </div>
     </aside>
   </main>
 
   <article id="article" hidden></article>
-  <footer>Cât costă o știre? · concept de campanie Ads Wrapped, proiect studențesc pentru AdVenture 2027. Ziarul și prețurile sunt fictive, estimate pentru joc.</footer>
+  <footer>Cât costă o știre? · joc de campanie, proiect studențesc AdVenture 2027. Ziarul este fictiv; prețurile sunt estimate și rotunjite.<br>
+  Surse pentru prețuri: salarii jurnaliști (<a href="https://worldsalaries.com/average-journalist-salary-in-germany/">WorldSalaries</a>, <a href="https://www.paylab.com/fr/salaryinfo/journalism-printing-arts-media/journalist?lang=en">Paylab</a>),
+  tarife fotografi (<a href="https://solohourly.com/rates/photographer-rates-in-germany">Solohourly, după ghidul BFF 2025</a>, <a href="http://www.londonfreelance.org/rates/index.php?work=Photography&amp;sect=news&amp;arch=N">London Freelance</a>),
+  preț mediu hotel în Europa 2025 (<a href="https://www.hospitalitynet.org/opinion/4132157/market-beat-europe-fy-2025">Hospitality Net</a>),
+  prețuri tren (<a href="https://nltimes.nl/node/82178">NL Times, date Eurostat</a>),
+  salarii editori (<a href="https://worldsalaries.com/average-sub-editor-salary-in-italy/">WorldSalaries</a>, <a href="https://payscale.com/research/DE/Job=Associate_Editor/Salary/af0e8de1/Berlin">PayScale</a>),
+  tarife traducere (<a href="https://www.balticmedia.com/?p=1998">Baltic Media</a>).</footer>
 </div>
 
 <script>
 const $ = id => document.getElementById(id);
 const ITEMS = [
-  {em:"🧑‍💻", t:"O zi de muncă a reporterului", d:"Documentare, interviuri și scris. Opt ore, de obicei mai multe.", r:"REPORTER, 1 ZI", p:180},
-  {em:"🚆", t:"Drumul până la locul faptei", d:"Tren dus-întors și o noapte de cazare.", r:"DRUM + CAZARE", p:120},
-  {em:"📷", t:"Fotograful", d:"O zi de lucru, ca știrea să aibă poze clare și reale.", r:"FOTOGRAF, 1 ZI", p:200},
-  {em:"✍️", t:"Editorul", d:"Verifică faptele, corectează textul și alege titlul.", r:"EDITOR", p:90},
-  {em:"🖥️", t:"Site-ul", d:"Serverele care țin știrea online pentru toți cititorii.", r:"SITE + SERVERE", p:60}
+  {em:"🧑‍💻", t:"O zi de muncă a reporterului", d:"Documentare, interviuri și scris. Opt ore, de obicei mai multe.", r:"REPORTER, 1 ZI", p:150,
+   src:"Un jurnalist din Europa câștigă aproximativ 2.100–4.400 € brut pe lună, în funcție de țară. Am luat un salariu de mijloc, împărțit pe zile."},
+  {em:"🚆", t:"Drumul până la locul faptei", d:"Tren dus-întors și o noapte de cazare.", r:"DRUM + CAZARE", p:220,
+   src:"O noapte la hotel în Europa a costat în medie aproximativ 159 € în 2025. La asta se adaugă trenul dus-întors."},
+  {em:"📷", t:"Fotograful", d:"O zi de lucru, ca știrea să aibă poze clare și reale.", r:"FOTOGRAF, 1 ZI", p:400,
+   src:"Un fotograf profesionist cere de obicei 400 € sau mai mult pe zi. În Germania, tarifele obișnuite sunt între 400 și 1.200 € pe zi."},
+  {em:"✍️", t:"Editorul", d:"O zi în care verifică faptele, corectează textul și alege titlul.", r:"EDITOR, 1 ZI", p:110,
+   src:"Un editor câștigă aproximativ 2.000–2.800 € brut pe lună, adică în jur de 110 € pe zi."},
+  {em:"🌍", t:"Traducerea", d:"Ca știrea să ajungă și la cititorii din alte țări europene.", r:"TRADUCERE", p:120,
+   src:"Traducerile profesionale costă aproximativ 0,10–0,15 € pe cuvânt. Un articol are în jur de 1.000 de cuvinte."}
 ];
-const TOTAL = ITEMS.reduce((a, x) => a + x.p, 0), MAX = 500;
+const TOTAL = ITEMS.reduce((a, x) => a + x.p, 0), MAX = 600;
 const eur = n => `${n.toLocaleString("ro-RO")} €`;
 const eur2 = n => `${n.toLocaleString("ro-RO", {minimumFractionDigits:2, maximumFractionDigits:2})} €`;
 let G = null;
@@ -219,10 +232,10 @@ function intro(){
   $("card").innerHTML = `<div class="hero">
     <div class="kick"><b>Joc</b> ghicește prețul</div>
     <h1>Cât costă o <em>știre?</em></h1>
-    <p class="lead">Citești știri gratis în fiecare zi. Dar cineva plătește reporterul, drumul, fotograful și site-ul. Ghicește cât costă fiecare.</p>
+    <p class="lead">Citești știri gratis în fiecare zi. Dar cineva plătește reporterul, drumul, fotograful, editorul și traducerea. Ghicește cât costă fiecare.</p>
     <div class="meta"><span>5 runde</span><span>1 minut</span><span>fără cont</span></div>
     <button class="go" id="go">Începe ▶</button>
-    <p class="note">Prețurile sunt estimate și rotunjite, pentru joc.</p>
+    <p class="note">Prețuri estimate și rotunjite, pe baza salariilor și tarifelor medii din Europa. Sursele sunt jos, în pagină.</p>
   </div>`;
   $("go").onclick = start;
 }
@@ -237,7 +250,7 @@ function round(){
     <div class="q">Cât crezi că costă?</div>
     <div class="val" id="val">${start}<small>€</small></div>
     <div class="slider" id="sl"><input type="range" id="rng" min="0" max="${MAX}" step="5" value="${start}" aria-label="Prețul ghicit, în euro">
-      <div class="scale"><span>0 €</span><span>250 €</span><span>${MAX} €</span></div></div>
+      <div class="scale"><span>0 €</span><span>300 €</span><span>${MAX} €</span></div></div>
     <div class="fb" id="fb"></div>
     <div class="act"><button class="go" id="guess">Ghicește</button></div>`;
   const r = $("rng"), upd = () => { $("val").innerHTML = `${r.value}<small>€</small>`; r.style.setProperty("--p", (r.value / MAX * 100) + "%"); };
@@ -259,7 +272,7 @@ function reveal(){
   requestAnimationFrame(tick);
   const diff = Math.abs(g - it.p);
   const head = acc >= .9 ? "Aproape perfect!" : hit ? "Bine, ai fost aproape." : g < it.p ? "Mai scump decât credeai." : "Mai ieftin decât credeai.";
-  $("fb").innerHTML = `<b class="${hit ? "good" : ""}">${head}</b><span>Ai zis ${eur(g)}. Prețul estimat e ${eur(it.p)}${diff ? `, cu ${eur(diff)} ${g < it.p ? "mai mult" : "mai puțin"}` : ""}.</span>`;
+  $("fb").innerHTML = `<b class="${hit ? "good" : ""}">${head}</b><span>Ai zis ${eur(g)}. Prețul estimat e ${eur(it.p)}${diff ? `, cu ${eur(diff)} ${g < it.p ? "mai mult" : "mai puțin"}` : ""}.</span><small class="src">${it.src}</small>`;
   hit ? beep([659, 880, 1175]) : beep([392, 330], .1, "square", .035);
   setTimeout(() => { $("lines").appendChild(rcLine(it.r, eur2(it.p))); printer(.35); }, 250);
   const last = G.i === ITEMS.length - 1;
@@ -313,7 +326,7 @@ function article(){
     <div class="aby">De redacția Dimineața Europeană · 30 de secunde de citit</div>
     <div class="acols">
       <div>
-        <p>Ai ghicit ${G.hits} din 5 prețuri. Indiferent de scor, nota rămâne aceeași: un reporter, un drum, un fotograf, un editor și un site. Pe tine nu te-au costat nimic.</p>
+        <p>Ai ghicit ${G.hits} din 5 prețuri. Indiferent de scor, nota rămâne aceeași: un reporter, un drum, un fotograf, un editor și o traducere. Pe tine nu te-au costat nimic.</p>
         <p>Așa funcționează aproape tot ce citești, vezi și asculți gratis online. Doar cam unul din șase europeni plătește pentru știri. Restul notei îl plătesc reclamele.</p>
         <p>Știm că unele reclame deranjează, iar presa europeană lucrează la reclame care nu-ți acoperă ecranul. Tu poți face ceva simplu: păstrează reclamele pornite pe site-urile pe care le iubești.</p>
       </div>
