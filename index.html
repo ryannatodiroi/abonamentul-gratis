@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reporterul de buzunar</title>
+<meta name="description" content="Are 0 € buget și o singură mâncare: reclamele. Ține-l în viață până publică știrea.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Reporterul de buzunar">
+<meta property="og:description" content="Are 0 € buget și o singură mâncare: reclamele. Ține-l în viață până publică știrea. Un joc de 2 minute.">
+<meta property="og:url" content="https://ryannatodiroi.github.io/reporterul-de-buzunar/">
+<meta property="og:image" content="https://ryannatodiroi.github.io/reporterul-de-buzunar/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0E1830">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,600&family=Inter:wght@400;500;600;700&family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14213D;--paper:#F6F1E7;--coral:#FF6B4A;--mustard:#F2B134;--teal:#2A9D8F;--sky:#BFD7EA;--plum:#5B2A86;
+  --lcd:#C3CD9C;--lcd-d:#26301E;--lcd-m:#6F7C55;
+  --game:"Baloo 2",system-ui,sans-serif;--serif:"Fraunces",Georgia,serif;--sans:"Inter",system-ui,sans-serif;--pix:"Pixelify Sans",ui-monospace,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:radial-gradient(1100px 620px at 75% -10%,#243a66 0%,#0E1830 58%) no-repeat,#0E1830;color:#E9EDF5;font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--mustard);outline-offset:3px}
+[hidden]{display:none!important}
+.wrap{max-width:1040px;margin:0 auto;padding:16px 16px 36px}
+.bar{display:flex;justify-content:space-between;align-items:center;color:#cfd6e4;font-size:13px;margin-bottom:18px;gap:10px}
+.bar .logo{color:#fff;text-decoration:none;font-family:var(--serif);font-weight:900;font-size:18px}
+.bar .logo i{font-weight:600}
+.bar .r{display:flex;align-items:center;gap:12px}
+#snd{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.09);font-size:15px}
+@media(max-width:520px){.bar .by{display:none}}
+
+/* ---------- layout ---------- */
+.game{display:grid;grid-template-columns:1fr minmax(0,400px);gap:48px;align-items:center;min-height:calc(100vh - 150px)}
+@media(max-width:860px){.game{grid-template-columns:1fr;gap:26px;justify-items:center;min-height:0}.panel{max-width:400px;width:100%}body.playing .panel{order:2}}
+
+/* ---------- side panel ---------- */
+.kick{font-family:var(--pix);font-size:14px;letter-spacing:.08em;color:var(--mustard);text-transform:uppercase}
+.panel h1{font-family:var(--game);font-weight:800;font-size:clamp(42px,6.4vw,70px);line-height:.94;margin:12px 0 16px;color:#fff;letter-spacing:-.01em}
+.panel h1 em{font-style:normal;color:var(--coral)}
+.lead{font-size:17.5px;line-height:1.5;color:#cfd6e4;max-width:440px}
+.lead b{color:#fff}
+.nm{display:block;margin-top:24px;font-size:13px;font-weight:600;color:#9aa6bf;letter-spacing:.03em}
+.nm input{display:block;margin-top:8px;width:100%;max-width:300px;background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.18);border-radius:14px;padding:13px 16px;color:#fff;font:600 19px var(--game);outline:none}
+.nm input::placeholder{color:rgba(255,255,255,.4)}
+.nm input:focus{border-color:var(--mustard)}
+.go{margin-top:16px;background:var(--coral);color:#fff;font:800 19px var(--game);padding:15px 30px;border-radius:999px;box-shadow:0 6px 0 #c4462c;transition:transform .08s,box-shadow .08s}
+.go:active{transform:translateY(4px);box-shadow:0 2px 0 #c4462c}
+.panel h2{font:800 24px var(--game);color:#fff;margin-bottom:16px}
+.steps{list-style:none;counter-reset:s;display:grid;gap:13px}
+.steps li{counter-increment:s;position:relative;padding-left:40px;font-size:15.5px;line-height:1.45;color:#cfd6e4}
+.steps li::before{content:counter(s);position:absolute;left:0;top:-1px;width:28px;height:28px;border-radius:50%;background:var(--mustard);color:var(--ink);font:800 15px var(--game);display:grid;place-items:center}
+.steps b{color:#fff}
+.note{margin-top:14px;font-size:13.5px;color:#9aa6bf;line-height:1.45}
+.live{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:20px}
+.live div{background:rgba(255,255,255,.06);border-radius:14px;padding:12px 8px;text-align:center}
+.live b{display:block;font:800 26px var(--game);color:#fff}
+.live span{font-size:11.5px;color:#9aa6bf}
+.live .sk b{color:var(--coral)}
+
+/* ---------- device ---------- */
+.dev-wrap{position:relative;width:100%;max-width:380px;padding-top:24px}
+.ring{position:absolute;top:0;left:50%;width:50px;height:50px;margin-left:-25px;border-radius:50%;border:8px solid #d5dbe6;box-shadow:inset 0 2px 0 rgba(0,0,0,.25)}
+.device{position:relative;padding:28px 22px 22px;border-radius:58px 58px 66px 66px;
+  background:radial-gradient(140% 90% at 28% 8%,#ff8f74 0%,var(--coral) 46%,#e14e2c 100%);
+  box-shadow:inset 0 6px 0 rgba(255,255,255,.28),inset 0 -10px 0 rgba(0,0,0,.14),0 30px 60px rgba(0,0,0,.45)}
+.brand{text-align:center;font:600 11px var(--pix);letter-spacing:.32em;color:rgba(255,255,255,.8);margin-bottom:10px}
+.bezel{background:#1d2740;border-radius:24px;padding:12px;box-shadow:inset 0 3px 8px rgba(0,0,0,.55)}
+.lcd{position:relative;background-color:var(--lcd);border-radius:11px;padding:8px 10px 11px;color:var(--lcd-d);font-family:var(--pix);overflow:hidden;
+  background-image:linear-gradient(rgba(38,48,30,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(38,48,30,.05) 1px,transparent 1px);background-size:4px 4px;
+  box-shadow:inset 0 0 20px rgba(38,48,30,.28)}
+.lcd .top{display:flex;justify-content:space-between;align-items:center;font-size:13px;letter-spacing:.03em;gap:6px}
+.slots{display:flex;gap:4px}
+.slots i{width:22px;height:19px;display:grid;place-items:center;border:1.5px dashed var(--lcd-m);border-radius:4px;opacity:.6}
+.slots i.on{border-style:solid;border-color:var(--lcd-d);opacity:1;background:rgba(38,48,30,.08)}
+.slots svg{width:13px;height:auto;display:block}
+.scene{position:relative;margin-top:6px}
+#scene{display:block;width:100%;height:auto;aspect-ratio:64/36}
+.msg{position:absolute;left:0;right:0;top:5%;text-align:center;font-size:23px;font-weight:700;letter-spacing:.05em;pointer-events:none;
+  text-shadow:2px 0 0 var(--lcd),-2px 0 0 var(--lcd),0 2px 0 var(--lcd),0 -2px 0 var(--lcd)}
+.msg:empty{display:none}
+.toast{text-align:center;font-size:13px;line-height:1.25;min-height:34px;margin:4px 0 6px;display:grid;place-items:center}
+.toast.warn{animation:blink .5s steps(2) infinite}
+.bars{display:grid;gap:6px}
+.bars .row{display:grid;grid-template-columns:15px 62px 1fr;align-items:center;gap:6px;font-size:12px;letter-spacing:.04em}
+.bars svg{width:15px;height:auto;display:block}
+.seg{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;height:10px}
+.seg i{background:rgba(38,48,30,.12)}
+.seg i.on{background:var(--lcd-d)}
+.row.low .seg i.on{animation:blink .6s steps(2) infinite}
+@keyframes blink{50%{opacity:.25}}
+.btns{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px;justify-items:center}
+.rb{display:grid;justify-items:center;gap:7px}
+.rb .cap{width:66px;height:66px;border-radius:50%;display:grid;place-items:center;box-shadow:inset 0 4px 0 rgba(255,255,255,.4),inset 0 -4px 0 rgba(0,0,0,.12),0 6px 0 rgba(0,0,0,.25);transition:transform .08s,box-shadow .08s}
+.rb[data-k=c] .cap{background:var(--mustard)}
+.rb[data-k=d] .cap{background:#7fd1c5}
+.rb[data-k=b] .cap{background:var(--sky)}
+.rb .cap svg{width:30px;height:auto;display:block}
+.rb small{font:700 11px var(--pix);letter-spacing:.14em;color:#fff}
+.rb:active:not(:disabled) .cap{transform:translateY(4px);box-shadow:inset 0 4px 0 rgba(255,255,255,.4),0 2px 0 rgba(0,0,0,.25)}
+.rb:disabled{cursor:default}
+.rb:disabled .cap{filter:saturate(.4) brightness(.9)}
+.rb.need .cap{animation:pulse .9s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.trip{display:block;width:100%;margin-top:18px;background:var(--ink);color:var(--mustard);font:700 15px var(--pix);letter-spacing:.06em;padding:14px 10px;border-radius:999px;box-shadow:0 5px 0 rgba(0,0,0,.3);transition:transform .08s}
+.trip:active:not(:disabled){transform:translateY(3px)}
+.trip:disabled{background:rgba(20,33,61,.32);color:rgba(255,255,255,.8);box-shadow:none;cursor:default;font-size:12.5px}
+.trip.ready{animation:glow 1s ease-in-out infinite}
+@keyframes glow{50%{background:#2a3f6e;transform:scale(1.02)}}
+.speaker{display:flex;justify-content:center;gap:7px;margin-top:16px}
+.speaker i{width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,.22)}
+
+/* ---------- ad ---------- */
+.ad{position:fixed;inset:0;z-index:50;background:rgba(6,10,22,.8);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);display:grid;place-items:center;padding:16px}
+.adcard{position:relative;width:min(360px,100%);max-height:calc(100vh - 32px);aspect-ratio:9/13;border-radius:22px;overflow:hidden;color:#fff;display:flex;flex-direction:column;box-shadow:0 30px 70px rgba(0,0,0,.55);animation:pop .22s ease-out}
+@keyframes pop{from{transform:scale(.9);opacity:0}}
+.adtop{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;font:600 12px var(--sans)}
+.adtop .lbl{background:rgba(0,0,0,.35);padding:5px 9px;border-radius:6px}
+.adtop .fict{opacity:.8}
+.adbody{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:0 24px}
+.adbody .em{font-size:86px;line-height:1;animation:wob 1.1s ease-in-out infinite;filter:drop-shadow(0 8px 0 rgba(0,0,0,.15))}
+@keyframes wob{50%{transform:rotate(-9deg) scale(1.08)}}
+.ab{font:800 32px/1.05 var(--game);margin-top:18px}
+.as{font-size:16px;line-height:1.4;margin-top:10px;opacity:.95;max-width:270px}
+.stake{margin:0 16px 12px;background:rgba(20,33,61,.82);border-radius:12px;padding:10px 12px;font:600 14px/1.35 var(--sans);text-align:center}
+.adfoot{position:relative;height:58px}
+.prog{position:absolute;left:0;right:0;bottom:0;height:5px;background:rgba(0,0,0,.25)}
+.prog i{display:block;height:100%;width:0;background:var(--mustard)}
+#skip{position:absolute;right:12px;bottom:15px;background:rgba(0,0,0,.62);border:1.5px solid rgba(255,255,255,.75);color:#fff;font:600 15px var(--sans);padding:9px 16px;border-radius:6px}
+.paid{position:absolute;inset:0;display:none;place-items:center;text-align:center;padding:30px;background:rgba(20,33,61,.93);font:800 25px/1.2 var(--game)}
+.paid.on{display:grid}
+.paid small{display:block;font:500 15px var(--sans);opacity:.8;margin-top:8px}
+
+/* ---------- result ---------- */
+.res{position:fixed;inset:0;z-index:60;background:rgba(6,10,22,.88);overflow:auto;padding:24px 16px}
+.rbox{width:min(400px,100%);margin:0 auto;animation:pop .3s ease-out}
+.card{border-radius:24px;padding:20px 20px 18px;color:var(--ink);background:var(--mustard)}
+.card.fail{background:var(--sky)}
+.card .cl{display:flex;justify-content:space-between;font:600 12px var(--pix);letter-spacing:.12em;opacity:.75}
+.mini{margin-top:10px;background:var(--lcd);border:6px solid #1d2740;border-radius:14px;padding:4px 6px}
+.mini svg{display:block;width:100%;height:auto}
+.card h2{font:800 30px/1.02 var(--game);margin-top:16px}
+.card p{font-size:15px;line-height:1.45;margin-top:8px}
+.prof{margin-top:14px;background:var(--ink);color:#fff;border-radius:14px;padding:12px 14px}
+.prof small{display:block;font:600 11px var(--pix);letter-spacing:.14em;color:var(--mustard)}
+.prof b{display:block;font:800 23px var(--game);margin-top:2px}
+.prof span{font-size:13.5px;opacity:.85;line-height:1.4;display:block;margin-top:2px}
+.st{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px;text-align:center;font-size:11.5px;font-weight:600}
+.st b{display:block;font:800 24px var(--game)}
+.ract{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.ract .btn{flex:1 1 auto;text-align:center}
+.btn{border-radius:999px;padding:13px 18px;font-weight:700;font-size:15px;text-decoration:none;display:inline-block}
+.btn.c{background:var(--coral);color:#fff}
+.btn.m{background:var(--mustard);color:var(--ink)}
+.btn.k{background:var(--ink);color:#fff}
+.btn.o{border:2px solid var(--ink);color:var(--ink)}
+.btn.w{border:2px solid rgba(255,255,255,.7);color:#fff}
+
+/* ---------- article ---------- */
+#article{background:var(--paper);color:var(--ink);border-radius:22px;padding:34px 30px 30px;max-width:900px;margin:0 auto}
+.mast{display:flex;justify-content:space-between;align-items:baseline;border-bottom:3px double var(--ink);padding-bottom:10px;gap:10px}
+.mast .n{font-family:var(--serif);font-weight:900;font-size:30px}
+.mast small{font-size:12px;opacity:.6}
+.sec{margin-top:18px;font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--coral)}
+#article h1{font-family:var(--serif);font-weight:900;font-size:clamp(34px,5.6vw,58px);line-height:1;letter-spacing:-.02em;margin:10px 0 12px}
+.stand{font-family:var(--serif);font-style:italic;font-size:21px;line-height:1.4;opacity:.85}
+.by{font-size:13px;opacity:.65;margin:14px 0 18px}
+.cols{display:grid;grid-template-columns:1.3fr .9fr;gap:28px}
+.cols p{font-family:Georgia,serif;font-size:17.5px;line-height:1.62;margin-bottom:14px}
+.cols p:first-child::first-letter{font-family:var(--serif);font-weight:900;font-size:58px;float:left;line-height:.8;padding:6px 8px 0 0}
+.receipt{background:#fff;border:1.5px dashed rgba(20,33,61,.35);border-radius:10px;padding:16px;font-family:ui-monospace,Menlo,monospace;font-size:14px;align-self:start}
+.receipt .r{display:flex;justify-content:space-between;padding:3px 0;gap:10px}
+.receipt .t{border-top:1.5px dashed rgba(20,33,61,.35);margin-top:8px;padding-top:8px;font-weight:700}
+.pull{margin-top:16px;font-family:var(--serif);font-weight:900;font-size:26px;line-height:1.1;color:var(--teal)}
+.cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.how{display:none;margin-top:12px;font-size:14.5px;line-height:1.5;background:#fff;border-radius:12px;padding:12px 14px}
+.how.open{display:block}
+@media(max-width:700px){.cols{grid-template-columns:1fr}#article{padding:24px 18px}}
+footer{color:#8D97AD;font-size:12px;margin-top:26px;line-height:1.5}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar"><span class="logo">Ads <i>Wrapped</i></span><span class="r"><span class="by">proiect studențesc · AdVenture 2027</span><button id="snd" aria-label="Sunet pornit/oprit">🔊</button></span></div>
+
+  <main class="game" id="game">
+    <section class="panel" id="panel">
+      <div id="intro">
+        <div class="kick">Ads Wrapped · un joc de 2 minute</div>
+        <h1>Reporterul<br><em>de buzunar</em></h1>
+        <p class="lead">E reporter, are 0 € buget și o singură mâncare: <b>reclamele</b>. Ține-l în viață până publică știrea.</p>
+        <label class="nm">Cum îl cheamă?<input id="name" maxlength="12" placeholder="Mitică" autocomplete="off" spellcheck="false"></label>
+        <button class="go" id="go">Pornește ▶</button>
+      </div>
+      <div id="how" hidden>
+        <h2>Cum îl ții în viață</h2>
+        <ol class="steps">
+          <li><b>Hrănește-l.</b> Apasă ☕ 🎫 🔋 și lasă reclama să ruleze 3 secunde.</li>
+          <li><b>Trimite-l pe teren</b> când toate barele trec de jumătate.</li>
+          <li><b>Adu poza, citatul și verificarea.</b> Apoi publică.</li>
+        </ol>
+        <p class="note">Ai 3 zile. Dacă o bară stă goală 5 secunde, își închide redacția.</p>
+        <div class="live"><div><b id="lW">0</b><span>reclame lăsate</span></div><div class="sk"><b id="lS">0</b><span>skip-uri</span></div><div><b id="lT">0</b><span>secunde de reclamă</span></div></div>
+      </div>
+    </section>
+
+    <section class="dev-wrap" aria-label="Reporterul de buzunar">
+      <div class="ring" aria-hidden="true"></div>
+      <div class="device">
+        <div class="brand">POCKET · PRESS</div>
+        <div class="bezel">
+          <div class="lcd">
+            <div class="top"><span id="day">ZIUA 0/3</span><span id="clock">--:--</span><span class="slots" id="slots"></span></div>
+            <div class="scene"><svg id="scene" viewBox="0 0 64 36" shape-rendering="crispEdges" role="img" aria-label="Reporterul pe ecran"></svg><div class="msg" id="msg"></div></div>
+            <div class="toast" id="toast" aria-live="polite"></div>
+            <div class="bars" id="bars"></div>
+          </div>
+        </div>
+        <div class="btns" id="btns"></div>
+        <button class="trip" id="trip" disabled>APASĂ „PORNEȘTE”</button>
+        <div class="speaker" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </section>
+  </main>
+
+  <article id="article" hidden></article>
+  <footer>Reporterul de buzunar · concept de campanie Ads Wrapped, proiect studențesc pentru AdVenture 2027. Personajul, reclamele și ziarul sunt fictive.</footer>
+</div>
+
+<div class="ad" id="ad" hidden role="dialog" aria-modal="true" aria-label="Reclamă">
+  <div class="adcard" id="adcard">
+    <div class="adtop"><span class="lbl">Reclamă · <span id="adT">0:03</span></span><span class="fict">reclamă fictivă</span></div>
+    <div class="adbody"><div class="em" id="adEm"></div><div class="ab" id="adB"></div><div class="as" id="adS"></div></div>
+    <div class="stake" id="adK"></div>
+    <div class="adfoot"><div class="prog"><i id="adP"></i></div><button id="skip">Skip ⏭</button></div>
+    <div class="paid" id="adDone"></div>
+  </div>
+</div>
+
+<div class="res" id="res" hidden role="dialog" aria-modal="true" aria-label="Rezultat"><div class="rbox" id="rbox"></div></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const now = () => performance.now();
+const esc = s => s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ---------- pixel art ---------- */
+const D = "#26301E", M = "#6F7C55", L = "#C3CD9C";
+const LCDPAL = {"#": D, "o": M, "w": L};
+function px(map, ox, oy, pal = LCDPAL){
+  let s = "";
+  for (let y = 0; y < map.length; y++){
+    const row = map[y]; let x = 0;
+    while (x < row.length){
+      const ch = row[x];
+      if (ch === "." || !pal[ch]){ x++; continue; }
+      let w = 1; while (x + w < row.length && row[x + w] === ch) w++;
+      s += `<rect x="${ox + x}" y="${oy + y}" width="${w}" height="1" fill="${pal[ch]}"/>`;
+      x += w;
+    }
+  }
+  return s;
+}
+const icon = (map, pal) => `<svg viewBox="0 0 ${map[0].length} ${map.length}" shape-rendering="crispEdges" aria-hidden="true">${px(map, 0, 0, pal)}</svg>`;
+
+const HEAD = [".....######.....","....########....","....##oooo##....","..############..","...#wwwwwwww#...","..#wwwwwwwwww#.."];
+const CHIN = "....########....";
+const FACE = {
+  neutral:["..#ww#wwww#ww#..","..#ww#wwww#ww#..","..#wowwwwwwow#..","..#wwww##wwww#..","...#wwwwwwww#..."],
+  blink:  ["..#wwwwwwwwww#..","..#ww#wwww#ww#..","..#wowwwwwwow#..","..#wwww##wwww#..","...#wwwwwwww#..."],
+  happy:  ["..#ww#wwww#ww#..","..#ww#wwww#ww#..","..#wowwwwwwow#..","..#www#ww#www#..","...#www##www#..."],
+  eat:    ["..#ww#wwww#ww#..","..#ww#wwww#ww#..","..#wowwwwwwow#..","..#wwww##wwww#..","...#www##www#..."],
+  sad:    ["..#wwwwwwwwww#..","..#ww#wwww#ww#..","..#wwowwwwwww#..","..#wwww##wwww#..","...#ww#ww#ww#..."],
+  x:      ["..#w#w#ww#w#w#..","..#ww#wwww#ww#..","..#w#w#ww#w#w#..","..#wwww##wwww#..","...#wwwwwwww#..."]
+};
+const BODY = {
+  base: [".....#oooo#.....","....#oo##oo#....","...#.#oooo#.#...",".....##..##....."],
+  walkA:[".....#oooo#.....","....#oo##oo#....","...#.#oooo#.#...","....##....##...."],
+  walkB:[".....#oooo#.....","....#oo##oo#....","....##oooo##....","......####......"],
+  up:   ["..#..#oooo#..#..","...#.oo##oo.#...",".....#oooo#.....",".....##..##....."]
+};
+const hero = (x, y, face, body) => px([...HEAD, ...FACE[face], CHIN, ...BODY[body]], x, y);
+
+const IC = {
+  c:  [".o.o...","..o.o..","#####..","#www###","#www#.#","#www###",".###..."],
+  d:  ["#######","#w##ww#",".wwwww.","#w###w#","#######"],
+  b:  ["######.","#oooo##","#oooo##","######."],
+  cam:["..##...","#######","#ww#ww#","#w###w#","#ww#ww#","#######"],
+  mic:[".###.","#ooo#","#ooo#",".###.","..#..",".###."],
+  chk:["......#",".....##","#...##.","##.##..",".###...","..#...."],
+  heart:[".#.#.","#####","#####",".###.","..#.."],
+  news:["########","#wwwwww#","#w####w#","#wwwwww#","#w##w#w#","#wwwwww#","########"],
+  alert:[".#.","###","###","###",".#.","...",".#."],
+  box:["########","#oooooo#","#o####o#","#oooooo#","########"]
+};
+const EGG = ["....####....","..##wwww##..",".#wwwwwwww#.",".#wwowwoww#.","#wwwwwwwwww#","#wowwwwwoww#","#wwwwowwwww#","#wwwwwwwoww#","#woowwwwwww#",".#wwwwowww#.",".#wwwwwwww#.","..##wwww##..","....####...."];
+const CRACK = "#w#w#ww#w#w#";
+const DESK = [".....######.....",".....#wwww#.....",".....#wwww#.....",".....######.....","...##########...","################",".#............#.",".#............#.",".#............#."];
+const BUBBLE = [".#########.","#wwwwwwwww#","#wwwwwwwww#","#wwwwwwwww#","#wwwwwwwww#","#wwwwwwwww#","#wwwwwwwww#","#wwwwwwwww#",".####.####.","#.........."];
+const SKY = [[0,9,8],[9,6,12],[15,8,6],[23,5,10],[28,9,14],[37,6,9],[43,8,11],[51,6,7],[57,7,13]];
+
+function sky(off){
+  off = ((Math.round(off) % 64) + 64) % 64;
+  let s = "";
+  for (const k of [0, 1]) for (const [bx, bw, bh] of SKY){
+    const x = bx + k * 64 - off; if (x > 64 || x + bw < 0) continue;
+    s += `<rect x="${x}" y="${32 - bh}" width="${bw - 1}" height="${bh}" fill="${M}" opacity=".38"/>`;
+    for (let wy = 32 - bh + 2; wy < 30; wy += 3) for (let wx = x + 1; wx < x + bw - 2; wx += 2) s += `<rect x="${wx}" y="${wy}" width="1" height="1" fill="${L}" opacity=".7"/>`;
+  }
+  s += `<rect x="0" y="32" width="64" height="1" fill="${D}"/>`;
+  for (let gx = (4 - off % 4) % 4; gx < 64; gx += 4) s += `<rect x="${gx}" y="34" width="2" height="1" fill="${M}"/>`;
+  return s;
+}
+function iconAt(map, cx, y){ return px(map, Math.round(cx - map[0].length / 2), Math.round(y)); }
+
+/* ---------- game data ---------- */
+const K = ["c", "d", "b"];
+const LBL = {c:"CAFEA", d:"DRUM", b:"BATERIE"};
+const EMO = {c:"☕", d:"🎫", b:"🔋"};
+const RATE = {c:3.2, d:2.3, b:2.7};
+const DAY = 25, GAIN = 45, BONUS = 20, NEED = 50, COST = 30;
+const PIECES = [{N:"POZA", n:"poza", map:IC.cam}, {N:"CITATUL", n:"citatul", map:IC.mic}, {N:"VERIFICAREA", n:"verificarea", map:IC.chk}];
+const ADS = {
+  c:[{em:"☕", b:"Cafea Trezie", s:"Te trezește mai repede decât notificările.", bg:"linear-gradient(160deg,#FF6B4A,#F2B134)"},
+     {em:"🥐", b:"Espresso de Luni", s:"Pentru că lunea nu se negociază.", bg:"linear-gradient(160deg,#8a4b2a,#e0965a)"}],
+  d:[{em:"🚆", b:"Trenul de 7:15", s:"Ajungi. Uneori chiar la timp.", bg:"linear-gradient(160deg,#2A9D8F,#7fd1c5)"},
+     {em:"🛴", b:"Trotineta Zbor", s:"Zero trafic. Câțiva porumbei speriați.", bg:"linear-gradient(160deg,#3a7bd5,#7fd1c5)"}],
+  b:[{em:"🔋", b:"Baterii Veșnic 2000", s:"Țin mai mult decât rezoluțiile de Anul Nou.", bg:"linear-gradient(160deg,#5B2A86,#3a7bd5)"},
+     {em:"🔌", b:"Powerbank Bunica", s:"Mereu încărcat. Mereu te întreabă dacă ai mâncat.", bg:"linear-gradient(160deg,#5B2A86,#FF6B4A)"}],
+  x:[{em:"📢", b:"Da, asta e o reclamă.", s:"Și tocmai a plătit o oră de muncă pentru un reporter.", bg:"linear-gradient(160deg,#14213D,#5B2A86)"},
+     {em:"🧦", b:"Șosete Fără Pereche", s:"Una se pierde oricum. Ți-o vindem direct pe a doua.", bg:"linear-gradient(160deg,#F2B134,#FF6B4A)"},
+     {em:"🤯", b:"Reclama despre reclame", s:"Știm, e meta. Dar plătește.", bg:"linear-gradient(160deg,#2A9D8F,#14213D)"}]
+};
+const PAID = {c:"cafeaua", d:"trenul", b:"bateria", x:"o oră de redacție"};
+const LACK = {c:"FĂRĂ CAFEA", d:"FĂRĂ BILET", b:"FĂRĂ BATERIE"};
+const ro = (n, sg, pl) => n === 1 ? `o ${sg}` : `${n}${n % 100 >= 20 || (n && n % 100 === 0) ? " de" : ""} ${pl}`;
+
+/* ---------- state ---------- */
+let S = null, NAME = "Mitică", NU = "MITICĂ";
+const adIx = {c:0, d:0, b:0, x:0};
+function fresh(){
+  return {mode:"title", t:0, day:1, last:now(), bars:{c:48, d:58, b:40}, pieces:0, warn:0, grace:0, nextAd:10, sky:0,
+    mood:null, moodUntil:0, float:null, trip:null, t0:0, why:null,
+    stats:{watched:0, skipped:0, sec:0, items:{c:0, d:0, b:0, x:0}}};
+}
+S = fresh();
+
+/* ---------- sound ---------- */
+let AC = null, muted = false;
+try { muted = localStorage.getItem("rb-mute") === "1"; } catch(e){}
+function beep(notes, d = .09, vol = .045){
+  if (muted) return;
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    const t0 = AC.currentTime + .01;
+    notes.forEach((f, i) => {
+      const o = AC.createOscillator(), g = AC.createGain();
+      o.type = "square"; o.frequency.value = f;
+      g.gain.setValueAtTime(vol, t0 + i * d); g.gain.exponentialRampToValueAtTime(.0001, t0 + i * d + d * .95);
+      o.connect(g).connect(AC.destination); o.start(t0 + i * d); o.stop(t0 + i * d + d);
+    });
+  } catch(e){}
+}
+const SFX = {
+  tap:() => beep([880], .05), good:() => beep([660, 880, 1175], .08), skip:() => beep([440, 330, 220], .1),
+  piece:() => beep([523, 659, 784, 1046], .1), win:() => beep([523, 659, 784, 1046, 784, 1046, 1318], .12),
+  fail:() => beep([392, 330, 262, 196], .18), crack:() => beep([1200, 900], .04), day:() => beep([784, 988], .1), warn:() => beep([300], .08, .03)
+};
+function setSnd(){ $("snd").textContent = muted ? "🔇" : "🔊"; }
+$("snd").onclick = () => { muted = !muted; try { localStorage.setItem("rb-mute", muted ? "1" : "0"); } catch(e){} setSnd(); };
+setSnd();
+
+/* ---------- build UI ---------- */
+const BTNPAL = {"#":"#14213D", "o":"#14213D", "w":"rgba(255,255,255,.55)"};
+$("bars").innerHTML = K.map(k => `<div class="row" id="r${k}">${icon(IC[k])}<span>${LBL[k]}</span><div class="seg" id="s${k}">${"<i></i>".repeat(10)}</div></div>`).join("");
+$("btns").innerHTML = K.map((k, i) => `<button class="rb" data-k="${k}" id="f${k}" disabled aria-label="${LBL[k]} (tasta ${i + 1})"><span class="cap">${icon(IC[k], BTNPAL)}</span><small>${LBL[k]}</small></button>`).join("");
+$("slots").innerHTML = PIECES.map((p, i) => `<i id="p${i}" title="${p.n}">${icon(p.map)}</i>`).join("");
+K.forEach(k => $("f" + k).onclick = () => feed(k));
+
+/* ---------- toast & messages ---------- */
+let toastT = null, msgT = null;
+function toast(txt, ms = 2400, warn = false){
+  clearTimeout(toastT); const el = $("toast"); el.textContent = txt; el.classList.toggle("warn", warn);
+  if (ms) toastT = setTimeout(() => { el.textContent = ""; el.classList.remove("warn"); }, ms);
+}
+function msg(txt, ms = 0){ clearTimeout(msgT); $("msg").textContent = txt; if (ms) msgT = setTimeout(() => $("msg").textContent = "", ms); }
+function mood(m, ms){ S.mood = m; S.moodUntil = now() + ms; }
+
+/* ---------- HUD ---------- */
+function canTrip(){ return S.mode === "play" && S.pieces < 3 && K.every(k => S.bars[k] >= NEED); }
+function hud(){
+  for (const k of K){
+    const v = S.bars[k], on = Math.ceil(v / 10);
+    [...$("s" + k).children].forEach((el, i) => el.classList.toggle("on", i < on));
+    $("r" + k).classList.toggle("low", S.mode === "play" && v < 25);
+  }
+  const low = K.reduce((a, k) => S.bars[k] < S.bars[a] ? k : a, "c");
+  K.forEach(k => {
+    const b = $("f" + k); b.disabled = S.mode !== "play";
+    b.classList.toggle("need", S.mode === "play" && k === low && S.bars[k] < 30);
+  });
+  PIECES.forEach((p, i) => $("p" + i).classList.toggle("on", i < S.pieces));
+  if (S.mode === "title"){ $("day").textContent = "ZIUA 0/3"; $("clock").textContent = "--:--"; }
+  else {
+    $("day").textContent = `ZIUA ${S.day}/3`;
+    const fr = (S.t % DAY) / DAY, mins = Math.floor((9 * 60 + fr * 11 * 60) / 10) * 10;
+    $("clock").textContent = `${String(Math.floor(mins / 60)).padStart(2, "0")}:${String(mins % 60).padStart(2, "0")}`;
+  }
+  const tb = $("trip"), ok = canTrip();
+  tb.disabled = !ok; tb.classList.toggle("ready", ok);
+  tb.textContent = S.mode === "trip" ? "PE TEREN…" : S.mode === "pub" ? "SE PUBLICĂ…" : S.mode === "fail" ? "REDACȚIA S-A ÎNCHIS" :
+    S.mode === "title" || S.mode === "hatch" ? "APASĂ „PORNEȘTE”" : ok ? `PE TEREN ▶ ADU ${PIECES[S.pieces].N}` : "PE TEREN · BARELE PESTE JUMĂTATE";
+  $("lW").textContent = S.stats.watched; $("lS").textContent = S.stats.skipped; $("lT").textContent = S.stats.sec;
+}
+
+/* ---------- render the LCD scene ---------- */
+function render(){
+  const n = now(), t = n / 1000; let s = "";
+  if (S.mode === "title" || S.mode === "hatch"){
+    s += sky(0) + px(DESK, 46, 23);
+    const e = S.mode === "hatch" ? (n - S.t0) / 1000 : 0;
+    if (S.mode === "title" || e < .9){
+      const wob = S.mode === "title" ? (Math.floor(t * 2) % 2 ? 1 : -1) * (Math.floor(t * 2) % 4 < 2 ? 1 : 0) : (Math.floor(t * 12) % 2 ? 1 : -1);
+      s += px(EGG, 22 + wob, 18);
+    } else if (e < 1.5){
+      const eg = EGG.slice(); eg[6] = CRACK; s += px(eg, 22, 18);
+    } else {
+      const lift = Math.min(1, (e - 1.5) * 2.5);
+      s += hero(20, 16 - Math.round(lift * 2), "happy", "up");
+      s += px(EGG.slice(7), 22, 25);
+      if (lift < 1) s += px(EGG.slice(0, 6), 22, Math.round(18 - lift * 18));
+    }
+    $("scene").innerHTML = s; return;
+  }
+
+  let x = 20, y = 16, face = "neutral", body = "base", desk = true, carry = null;
+  const low = Math.min(S.bars.c, S.bars.d, S.bars.b);
+  const walk = Math.floor(t * 7) % 2 ? "walkA" : "walkB";
+
+  if (S.mode === "trip" && S.trip){
+    const e = (n - S.trip.t0) / 1000;
+    if (S.trip.phase === "out"){ x = 20 + Math.round(e / 1.1 * 48); body = walk; }
+    else if (S.trip.phase === "field"){ desk = false; x = 24; body = walk; S.sky = e * 24; if (S.trip.found) carry = PIECES[S.pieces].map; }
+    else if (S.trip.phase === "back"){ x = -16 + Math.round(Math.min(1, e / 1.1) * 36); body = walk; face = "happy"; carry = PIECES[S.pieces].map; }
+  } else if (S.mode === "pub"){
+    face = "happy"; body = Math.floor(t * 4) % 2 ? "up" : "base"; y -= Math.floor(t * 4) % 2 ? 2 : 0; carry = IC.news;
+  } else if (S.mode === "fail"){
+    const e = (n - S.t0) / 1000; face = "sad"; body = walk; x = 20 + Math.round(Math.min(1, e / 2.6) * 50);
+  } else {
+    if (low < 25) face = "sad";
+    if (S.warn > 0) face = "x";
+    const m = S.mood && n < S.moodUntil ? S.mood : null;
+    if (m === "happy"){ face = "happy"; const up = Math.floor(t * 4) % 2; body = up ? "up" : "base"; y -= up ? 2 : 0; }
+    else if (m === "eat"){ face = Math.floor(t * 6) % 2 ? "eat" : "neutral"; }
+    else if (m === "sad"){ face = "sad"; }
+    else { if (face === "neutral" && t % 3.4 < .16) face = "blink"; y += Math.floor(t * 2) % 2; }
+  }
+
+  s += sky(S.mode === "trip" && S.trip && S.trip.phase === "field" ? S.sky : 0);
+  if (desk) s += px(DESK, 46, 23);
+  s += hero(x, y, face, body);
+  if (S.mode === "fail") s += px(IC.box, x + 4, y + 11);
+  if (carry) s += iconAt(carry, x + 8, y - carry.length - 2);
+
+  if (S.float && n - S.float.t0 < 1200){
+    const e = (n - S.float.t0) / 1200;
+    s += iconAt(S.float.map, x + 8, 8 - e * 7);
+  }
+  if (S.mode === "play" && !S.float || (S.mode === "play" && S.float && n - S.float.t0 >= 1200)){
+    let ic = null;
+    if (S.warn > 0) ic = Math.floor(t * 3) % 2 ? IC.alert : null;
+    else if (low < 30){ const k = K.find(k => S.bars[k] === low); ic = Math.floor(t * 2) % 2 ? IC[k] : null; s += px(BUBBLE, 37, 2); }
+    if (S.warn > 0) s += px(BUBBLE, 37, 2);
+    if (ic) s += iconAt(ic, 42.5, 2 + 1 + (7 - ic.length) / 2);
+  }
+  if (S.mode === "pub"){
+    for (let i = 0; i < 22; i++){
+      const cx = (i * 37 + 5) % 64, cy = (t * 18 + i * 13) % 36;
+      s += `<rect x="${cx}" y="${Math.floor(cy)}" width="1" height="1" fill="${i % 2 ? D : M}"/>`;
+    }
+  }
+  $("scene").innerHTML = s;
+}
+
+/* ---------- main loop ---------- */
+function tick(){
+  const n = now(), dt = Math.min(.25, (n - S.last) / 1000); S.last = n;
+  if (S.mode === "play"){
+    S.t += dt;
+    if (S.grace > 0) S.grace -= dt;
+    else for (const k of K) S.bars[k] = Math.max(0, S.bars[k] - RATE[k] * dt);
+
+    const d = Math.min(3, 1 + Math.floor(S.t / DAY));
+    if (d !== S.day){ S.day = d; msg(d === 3 ? "ULTIMA ZI!" : `ZIUA ${d}`, 1500); SFX.day(); }
+
+    const zero = K.some(k => S.bars[k] <= 0);
+    if (zero){
+      const before = Math.ceil(5 - S.warn); S.warn += dt; const left = Math.ceil(5 - S.warn);
+      if (left !== before || S.warn === dt) SFX.warn();
+      toast(`${NU} PLEACĂ ÎN ${Math.max(1, left)}…`, 0, true);
+      if (S.warn >= 5) return fail("leave");
+    } else if (S.warn > 0){ S.warn = 0; toast("UF, A RĂMAS!", 1400); }
+
+    if (S.t >= DAY * 3) return fail("late");
+
+    S.nextAd -= dt;
+    if (S.nextAd <= 0 && S.warn === 0){ S.nextAd = 14 + Math.random() * 5; openAd("x"); }
+  }
+  hud(); render();
+}
+setInterval(tick, 100);
+
+/* ---------- feeding = ads ---------- */
+function feed(k){
+  if (S.mode !== "play") return;
+  SFX.tap();
+  if (S.bars[k] >= 92){ toast(`${LBL[k]} E DEJA PLINĂ`, 1400); return; }
+  openAd(k);
+}
+let adTimer = null, curAd = null;
+function openAd(k){
+  S.mode = "ad";
+  const list = ADS[k], a = list[adIx[k]++ % list.length];
+  curAd = {k, t0: now(), dur: 3000};
+  $("adcard").style.background = a.bg;
+  $("adEm").textContent = a.em; $("adB").textContent = a.b; $("adS").textContent = a.s;
+  $("adK").innerHTML = k === "x" ? `Reclamă surpriză. Dacă o lași să ruleze: <b>+${BONUS} la tot</b> pentru ${esc(NAME)}.` : `Dacă o lași să ruleze: <b>${EMO[k]} +${GAIN}</b> pentru ${esc(NAME)}.`;
+  $("adP").style.width = "0"; $("adT").textContent = "0:03"; $("adDone").className = "paid";
+  $("ad").hidden = false; $("skip").focus({preventScroll:true});
+  clearInterval(adTimer); adTimer = setInterval(adTick, 50);
+}
+function adTick(){
+  const e = now() - curAd.t0;
+  $("adP").style.width = Math.min(100, e / curAd.dur * 100) + "%";
+  $("adT").textContent = "0:0" + Math.max(0, Math.ceil((curAd.dur - e) / 1000));
+  if (e >= curAd.dur) adWatched();
+}
+async function adWatched(){
+  clearInterval(adTimer); const k = curAd.k; curAd = null;
+  $("adDone").innerHTML = `✓ Reclama asta a plătit ${PAID[k]}.<small>${k === "x" ? `+${BONUS} la tot` : `${EMO[k]} +${GAIN}`} pentru ${esc(NAME)}</small>`;
+  $("adDone").className = "paid on"; SFX.good();
+  await sleep(750);
+  $("ad").hidden = true;
+  S.stats.watched++; S.stats.sec += 3; S.stats.items[k]++;
+  if (k === "x") K.forEach(q => S.bars[q] = Math.min(100, S.bars[q] + BONUS));
+  else S.bars[k] = Math.min(100, S.bars[k] + GAIN);
+  S.float = {map: k === "x" ? IC.heart : IC[k], t0: now()};
+  mood("eat", 900); setTimeout(() => { if (S.mode === "play") mood("happy", 900); }, 900);
+  toast(k === "x" ? `+${BONUS} LA TOT. MERSI!` : `+${GAIN} ${EMO[k]} RECLAMA A PLĂTIT ${PAID[k].toLocaleUpperCase("ro-RO")}`, 2000);
+  S.mode = "play"; S.last = now();
+}
+function skipAd(){
+  if (!curAd) return;
+  clearInterval(adTimer); const k = curAd.k; curAd = null;
+  $("ad").hidden = true;
+  S.stats.skipped++; SFX.skip();
+  try { navigator.vibrate && navigator.vibrate(60); } catch(e){}
+  mood("sad", 1600);
+  toast(k === "x" ? `SKIP. ${NU} PIERDE BONUSUL.` : `SKIP. ${NU} RĂMÂNE ${LACK[k]}.`, 2200);
+  S.mode = "play"; S.last = now();
+}
+$("skip").onclick = skipAd;
+
+/* ---------- field trip ---------- */
+async function trip(){
+  if (!canTrip()) return;
+  SFX.tap(); S.mode = "trip";
+  K.forEach(k => S.bars[k] = Math.max(0, S.bars[k] - COST));
+  const p = PIECES[S.pieces];
+  S.trip = {phase:"out", t0: now()}; hud();
+  await sleep(1100);
+  S.trip = {phase:"field", t0: now()}; msg("PE TEREN…");
+  await sleep(1500);
+  S.trip.found = true; msg(`AI ${p.N}!`); SFX.piece();
+  await sleep(1000);
+  msg(""); S.trip = {phase:"back", t0: now()};
+  await sleep(1150);
+  S.pieces++; S.trip = null; S.mode = "play"; S.last = now();
+  mood("happy", 1200);
+  if (S.pieces === 3) return publish();
+  toast(`AI ${p.N}! MAI AI ${3 - S.pieces}.`, 2200);
+}
+$("trip").onclick = trip;
+
+async function publish(){
+  S.mode = "pub"; msg("PUBLICAT!"); toast(`${NU} A PUBLICAT ȘTIREA!`, 0); SFX.win(); hud();
+  await sleep(2800);
+  msg(""); result(true);
+}
+async function fail(why){
+  S.mode = "fail"; S.why = why; S.t0 = now(); hud();
+  if (!$("ad").hidden){ clearInterval(adTimer); curAd = null; $("ad").hidden = true; }
+  msg(why === "late" ? "PREA TÂRZIU." : "A PLECAT.");
+  toast(why === "late" ? "TERMENUL A TRECUT." : `${NU} ÎȘI STRÂNGE LUCRURILE…`, 0); SFX.fail();
+  await sleep(3000);
+  msg(""); result(false);
+}
+
+/* ---------- result card ---------- */
+function profile(ok){
+  const sk = S.stats.skipped;
+  if (!ok) return sk === 0 ? {t:"Cititor fără grabă", d:"N-ai dat skip, dar ai uitat să-l hrănești. Mai încearcă."} : {t:"Skipper de profesie", d:"Degetul tău e mai rapid decât jurnalismul."};
+  if (sk === 0) return {t:"Mecena fără să știe", d:`N-ai dat skip niciodată. ${NAME} îți datorează o cafea.`};
+  if (sk <= 3) return {t:"Cititor de încredere", d:"Ai mai dat skip din reflex, dar știrea a ieșit."};
+  return {t:"Skipper reformat", d:`Ai dat skip de ${sk} ori și tot a ieșit. La limită.`};
+}
+function cardScene(ok){
+  let s = sky(0) + px(DESK, 46, 23);
+  if (ok) s += hero(20, 14, "happy", "up") + iconAt(IC.news, 28, 4);
+  else s += hero(34, 16, "sad", "walkA") + px(IC.box, 38, 27);
+  return `<svg viewBox="0 0 64 36" shape-rendering="crispEdges" aria-hidden="true">${s}</svg>`;
+}
+function result(ok){
+  const st = S.stats, pr = profile(ok), N = esc(NAME);
+  const h = ok ? `${N} a publicat știrea.` : S.why === "late" ? `Știrea lui ${N} n-a mai apărut.` : `${N} și-a închis redacția.`;
+  const p = ok ? `Datorită mie: am lăsat ${ro(st.watched, "reclamă", "reclame")} să ruleze și au plătit cafeaua, drumul și bateria.`
+    : S.why === "late" ? "Până să adune poza, citatul și verificarea, subiectul a apărut în altă parte. Copiat. Și greșit."
+    : "S-a angajat la o pagină de clickbait. Primul titlu: „Nu o să-ți vină să crezi ce a făcut acest reporter”.";
+  $("rbox").innerHTML = `
+    <div class="card ${ok ? "ok" : "fail"}" id="card">
+      <div class="cl"><span>REPORTERUL DE BUZUNAR</span><span>ADS WRAPPED</span></div>
+      <div class="mini">${cardScene(ok)}</div>
+      <h2>${h}</h2>
+      <p>${p}</p>
+      <div class="prof"><small>PROFILUL TĂU</small><b>${pr.t}</b><span>${esc(pr.d)}</span></div>
+      <div class="st"><div><b>${st.watched}</b>reclame lăsate</div><div><b>${st.skipped}</b>skip-uri</div><div><b>${st.sec}</b>secunde</div></div>
+    </div>
+    <div class="ract">
+      ${ok ? `<button class="btn c" id="rRead">Citește știrea · 30 sec ▶</button>` : `<button class="btn c" id="rAgain">Mai încearcă</button>`}
+      <button class="btn w" id="rShare">Trimite unui prieten</button>
+      ${ok ? `<button class="btn w" id="rAgain">Joacă din nou</button>` : `<button class="btn w" id="rRead">De ce a plecat? ▶</button>`}
+    </div>`;
+  $("res").hidden = false; $("res").scrollTop = 0;
+  $("rRead").onclick = () => { $("res").hidden = true; article(ok); };
+  $("rAgain").onclick = () => { $("res").hidden = true; begin(); };
+  $("rShare").onclick = async () => {
+    const txt = ok ? `${NAME} a publicat știrea datorită mie. Profilul meu: ${pr.t}. Tu îți ții reporterul în viață?`
+                   : `${NAME} și-a închis redacția din cauza mea. Profilul meu: ${pr.t}. Tu te descurci mai bine?`;
+    const b = $("rShare");
+    try { if (navigator.share){ await navigator.share({title:"Reporterul de buzunar", text:txt, url:location.href}); return; } } catch(e){ if (e && e.name === "AbortError") return; }
+    try { await navigator.clipboard.writeText(`${txt} ${location.href}`); b.textContent = "Link copiat ✓"; }
+    catch(e){ b.textContent = "Fă un screenshot 📸"; }
+  };
+}
+
+/* ---------- the article about the campaign ---------- */
+function article(ok){
+  const st = S.stats, N = esc(NAME), it = st.items;
+  $("game").hidden = true; const a = $("article"); a.hidden = false; window.scrollTo(0, 0);
+  a.innerHTML = `
+    <div class="mast"><span class="n">Dimineața Europeană</span><small>Ediție specială</small></div>
+    <div class="sec">Înțelegerea din spatele internetului gratuit</div>
+    <h1>${ok ? `Știrea asta a costat ${ro(st.watched, "reclamă", "reclame")}. Pe tine, 0 €.` : "Știrea asta n-a mai apărut."}</h1>
+    <p class="stand">${ok ? `Reclamele sunt mâncarea jurnalismului. ${N} a publicat pentru că le-ai lăsat să ruleze.` : `Reclamele sunt mâncarea jurnalismului. Fără ele, ${N} a rămas fără cafea, fără drum și fără baterie.`}</p>
+    <div class="by">${ok ? `De ${N}, reporter de buzunar` : "De redacția Dimineața Europeană"} · 30 de secunde de citit</div>
+    <div class="cols">
+      <div>
+        <p>${ok ? `Ca să ajungă știrea asta la tine, ${N} a avut nevoie de cafea, de un bilet de tren și de un laptop încărcat. Le-au plătit reclamele pe care le-ai lăsat să ruleze: ${st.sec} secunde din timpul tău, 0 € din buzunar.`
+                : "Ca să ajungă o știre la tine, un reporter are nevoie de cafea, de un bilet de tren și de un laptop încărcat. De data asta, reclamele au primit skip, iar nota n-a mai avut cine s-o plătească."}</p>
+        <p>Așa funcționează aproape tot ce citești, vezi și asculți gratis online. Doar cam unul din șase europeni plătește pentru știri. Restul notei îl plătesc reclamele.</p>
+        <p>Știm că unele reclame deranjează, iar presa europeană lucrează la reclame care nu-ți acoperă ecranul. Tu poți face ceva mai simplu: păstrează reclamele pornite pe site-urile pe care le iubești.</p>
+      </div>
+      <div>
+        <div class="receipt"><div style="font-weight:700;margin-bottom:6px">CE AU PLĂTIT RECLAMELE TALE</div>
+          <div class="r"><span>☕ Cafele</span><span>× ${it.c}</span></div>
+          <div class="r"><span>🎫 Bilete de tren</span><span>× ${it.d}</span></div>
+          <div class="r"><span>🔋 Încărcări</span><span>× ${it.b}</span></div>
+          <div class="r"><span>⭐ Bonusuri</span><span>× ${it.x}</span></div>
+          <div class="r"><span>⏭ Skip-uri</span><span>× ${st.skipped}</span></div>
+          <div class="r t"><span>Timpul tău</span><span>${st.sec} sec</span></div>
+          <div class="r"><span>Plătit de tine</span><span>0 €</span></div>
+        </div>
+        <div class="pull">Gratuit nu înseamnă fără cost.<br>Reclamele plătesc nota.</div>
+      </div>
+    </div>
+    <div class="cta-row">
+      <button class="btn o" id="howB">Păstrez reclamele pe site-urile mele</button>
+      <button class="btn k" id="playB">Joacă din nou</button>
+    </div>
+    <div class="how" id="howT"><b>Durează 10 secunde:</b> deschide ad blocker-ul și alege „Pauză pe acest site” sau „Permite reclamele pe acest site” pentru site-urile de știri, video și muzică pe care le folosești cel mai des.</div>`;
+  $("howB").onclick = () => $("howT").classList.toggle("open");
+  $("playB").onclick = () => { a.hidden = true; $("game").hidden = false; begin(); };
+}
+
+/* ---------- start / hatch ---------- */
+async function begin(){
+  const v = $("name").value.trim().replace(/\s+/g, " ");
+  NAME = v ? v.charAt(0).toLocaleUpperCase("ro-RO") + v.slice(1) : "Mitică";
+  NU = NAME.toLocaleUpperCase("ro-RO");
+  document.body.classList.add("playing");
+  $("intro").hidden = true; $("how").hidden = false;
+  S = fresh(); S.mode = "hatch"; S.t0 = now(); msg(""); toast("", 1);
+  SFX.crack(); setTimeout(SFX.crack, 450); setTimeout(SFX.crack, 900); setTimeout(SFX.good, 1500);
+  window.scrollTo({top: 0, behavior: "smooth"});
+  await sleep(2300);
+  S.mode = "play"; S.grace = 3; S.last = now();
+  mood("happy", 1200);
+  toast(`SALUT! SUNT ${NU}. MI-E FOAME DE RECLAME!`, 3400);
+}
+$("go").onclick = begin;
+$("name").addEventListener("keydown", e => { if (e.key === "Enter") begin(); });
+
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "INPUT") return;
+  if (curAd && (e.key === "Escape" || e.key.toLowerCase() === "s")) return skipAd();
+  if (S.mode !== "play") return;
+  const i = ["1", "2", "3"].indexOf(e.key);
+  if (i >= 0) feed(K[i]);
+  if (e.key.toLowerCase() === "t") trip();
+});
+hud(); render();
+</script>
+</body>
+</html>
