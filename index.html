@@ -654,11 +654,11 @@ function article(ok){
   const st = S.stats, N = esc(NAME), it = st.items;
   $("game").hidden = true; const a = $("article"); a.hidden = false; window.scrollTo(0, 0);
   a.innerHTML = `
-    <div class="mast"><span class="n">Dimineața Europeană</span><small>Ediție specială</small></div>
+    <div class="mast"><span class="n">Ediția Gratuită</span><small>Preț: 0 €</small></div>
     <div class="sec">Înțelegerea din spatele internetului gratuit</div>
     <h1>${ok ? `Știrea asta a costat ${ro(st.watched, "reclamă", "reclame")}. Pe tine, 0 €.` : "Știrea asta n-a mai apărut."}</h1>
     <p class="stand">${ok ? `Reclamele sunt mâncarea jurnalismului. ${N} a publicat pentru că le-ai lăsat să ruleze.` : `Reclamele sunt mâncarea jurnalismului. Fără ele, ${N} a rămas fără cafea, fără drum și fără baterie.`}</p>
-    <div class="by">${ok ? `De ${N}, reporter de buzunar` : "De redacția Dimineața Europeană"} · 30 de secunde de citit</div>
+    <div class="by">${ok ? `De ${N}, reporter de buzunar` : "De redacția Ediția Gratuită"} · 30 de secunde de citit</div>
     <div class="cols">
       <div>
         <p>${ok ? `Ca să ajungă știrea asta la tine, ${N} a avut nevoie de cafea, de un bilet de tren și de un laptop încărcat. Le-au plătit reclamele pe care le-ai lăsat să ruleze: ${st.sec} secunde din timpul tău, 0 € din buzunar.`
