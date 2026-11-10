@@ -133,6 +133,9 @@ input[type=range]:disabled::-webkit-slider-thumb{cursor:default}
 @media(max-width:700px){.acols{grid-template-columns:1fr}#article{padding:22px 18px;border-radius:24px}}
 footer{margin-top:30px;font-size:12.5px;line-height:1.6;opacity:.85}
 footer a{color:inherit}
+/* embedded in the campaign site: the site shows its own header */
+body.embed .top,body.embed footer{display:none}
+body.embed .wrap{padding-top:20px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -189,6 +192,8 @@ const TOTAL = ITEMS.reduce((a, x) => a + x.p, 0), MAX = 600;
 const eur = n => `${n.toLocaleString("ro-RO")} €`;
 const eur2 = n => `${n.toLocaleString("ro-RO", {minimumFractionDigits:2, maximumFractionDigits:2})} €`;
 let G = null;
+const EMBED = new URLSearchParams(location.search).has("embed");
+if (EMBED) document.body.classList.add("embed");
 
 /* ---------- sound ---------- */
 let AC = null, muted = false;
@@ -297,13 +302,17 @@ async function final(){
     <div class="score"><b>${G.hits}/5</b><span>prețuri ghicite</span></div>
     <div class="prof"><small>Profilul tău</small><b>${pr.t}</b><span>${pr.d}</span></div>
     <p class="lead" style="margin-top:18px">Știrea asta a costat <b>${eur(TOTAL)}</b>. Tu ai plătit <b>0 €</b>. Restul l-au plătit reclamele.</p>
-    <div class="fin-act">
-      <button class="go" id="fRead">Citește de ce contează ▶</button>
+    <div class="fin-act">${EMBED
+      ? `<button class="go" id="fNext">Vezi cine a plătit nota →</button>
+      <button class="go sec" id="fAgain">Mai joacă</button>`
+      : `<button class="go" id="fRead">Citește de ce contează ▶</button>
       <button class="go sec" id="fShare">Provoacă un prieten</button>
-      <button class="go sec" id="fAgain">Mai joacă</button>
+      <button class="go sec" id="fAgain">Mai joacă</button>`}
     </div>`;
-  $("fRead").onclick = article; $("fAgain").onclick = start;
-  $("fShare").onclick = async () => {
+  $("fAgain").onclick = start;
+  if (EMBED) $("fNext").onclick = () => parent.postMessage({type:"ccs-done", hits:G.hits, total:TOTAL}, "*");
+  else $("fRead").onclick = article;
+  if (!EMBED) $("fShare").onclick = async () => {
     const txt = `Am ghicit ${G.hits} din 5 la „Cât costă o știre?”. Tu știi cât costă o știre?`, url = location.href.split("?")[0].split("#")[0], b = $("fShare");
     try { if (navigator.share){ await navigator.share({title:"Cât costă o știre?", text:txt, url}); return; } } catch(e){ if (e && e.name === "AbortError") return; }
     try { await navigator.clipboard.writeText(`${txt} ${url}`); b.textContent = "Copiat ✓"; } catch(e){ b.textContent = "Fă un screenshot"; }
