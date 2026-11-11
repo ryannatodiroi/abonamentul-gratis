@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Abonamentul gratuit · pagina abonamentului</title>
+<title>Abonamentul gratis · pagina abonamentului</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -137,7 +137,7 @@ body.glitching > :not(.glitch-ov):not(script){animation:jit .11s steps(2) infini
 <body>
 <div class="nb-banner" id="nbBanner"><span id="nbText">Te uiți la varianta „Fără buget” a acestei pagini: fără reclame, fără buget, fără design.</span> <button id="nbOff">Adu reclamele înapoi</button></div>
 <div class="glitch-ov" id="glitch" aria-hidden="true"></div>
-<header><span class="wm">Abonamentul <i>gratuit</i></span><small>Contul tău · Abonament</small></header>
+<header><span class="wm">Abonamentul <i>gratis</i></span><small>Contul tău · Abonament</small></header>
 
 <main>
   <section aria-label="Cardul de membru">
@@ -145,7 +145,7 @@ body.glitching > :not(.glitch-ov):not(script){animation:jit .11s steps(2) infini
     <h1 id="h1">Ai deja un abonament. <em>Nu l‑ai cerut și nu‑l plătești.</em></h1>
     <div class="nbph">[ imagine indisponibilă ]<br><br>n‑am avut buget de un card de membru.</div>
     <div class="mcard" aria-live="polite">
-      <div class="row1"><span class="wm">Abonamentul <i>gratuit</i></span><span class="status"><i></i><span id="stat">ACTIV</span></span></div>
+      <div class="row1"><span class="wm">Abonamentul <i>gratis</i></span><span class="status"><i></i><span id="stat">ACTIV</span></span></div>
       <dl>
         <dt>Titular</dt><dd>tu</dd>
         <dt>Membru din</dt><dd>prima zi pe internet</dd>
@@ -186,7 +186,7 @@ body.glitching > :not(.glitch-ov):not(script){animation:jit .11s steps(2) infini
     </div>
   </section>
 </main>
-<footer>Abonamentul gratuit · concept de campanie, proiect studențesc (AdVenture 2027)</footer>
+<footer>Abonamentul gratis · Parepa Rebecca, Stoica Alin, Stoicescu Daria, Todiroi Ryanna</footer>
 
 <script>
 const $ = id => document.getElementById(id);
@@ -221,7 +221,7 @@ function noBudget(on, quiet){
   $("nb").setAttribute("aria-pressed", on);
   $("nb").querySelector(".lb").textContent = on ? "Adu reclamele înapoi" : "Vezi pagina fără reclame";
   $("nbHint").textContent = on ? "Asta e pagina fără bani din reclame. Nu prea arată bine, nu?" : "…și vezi cum ar arăta fără bani din reclame.";
-  $("h1").innerHTML = on ? "ai un abonament gratuit. (scuze, n‑am avut buget de un titlu mai bun)" : H1_ORIG;
+  $("h1").innerHTML = on ? "ai un abonament gratis. (scuze, n‑am avut buget de un titlu mai bun)" : H1_ORIG;
   $("h2").innerHTML = on ? "tot ce folosești gratis. inclus." : H2_ORIG;
   if (quiet) return;
   if (!on) setBlock(false);

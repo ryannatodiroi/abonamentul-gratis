@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Factura de 0 € · Abonamentul gratuit</title>
+<title>Factura de 0 € · Abonamentul gratis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -244,10 +244,10 @@ body.nobudget .strip .n{color:#777}
 <body>
 
 <!-- ================= LANDING ================= -->
-<section id="landing" class="screen on" aria-label="Factura abonamentului gratuit">
+<section id="landing" class="screen on" aria-label="Factura abonamentului gratis">
   <div class="top">
-    <span class="logo"><span class="pill">Abonamentul</span><i>gratuit</i></span>
-    <small>concept de campanie</small>
+    <span class="logo"><span class="pill">Abonamentul</span><i>gratis</i></span>
+    <small></small>
   </div>
   <div class="nb-banner">Te uiți la <b>varianta „Fără buget”</b> a acestei pagini: fără reclame, fără buget, fără design. <button id="nbOff">Adu reclamele înapoi</button></div>
   <div class="live" aria-live="off">
@@ -263,7 +263,7 @@ body.nobudget .strip .n{color:#777}
   <div class="hero">
     <div>
       <div class="kicker">Factura pe iunie 2027 · emisă pe 1&nbsp;iulie</div>
-      <h1 id="h1">Ți-a venit factura la abonamentul gratuit. <em>De plată: 0 €.</em></h1>
+      <h1 id="h1">Ți-a venit factura la abonamentul gratis. <em>De plată: 0 €.</em></h1>
       <p class="lead" id="lead">Știrile citite în tren. Rezumatul meciului. Rețeta pentru prânzul de duminică. Toate au fost incluse în abonament. Hai să vedem ce ai primit în iunie și cine a plătit.</p>
       <div class="ctas">
         <button class="cta" id="start">Deschide factura
@@ -278,7 +278,7 @@ body.nobudget .strip .n{color:#777}
       </p>
     </div>
     <div class="preview" aria-hidden="true">
-      <div class="notif"><span class="ap">0€</span><div><b>Abonamentul gratuit</b><span>Factura ta pe iunie e gata. De plată: 0,00&nbsp;€.</span></div><small>acum</small></div>
+      <div class="notif"><span class="ap">0€</span><div><b>Abonamentul gratis</b><span>Factura ta pe iunie e gata. De plată: 0,00&nbsp;€.</span></div><small>acum</small></div>
       <div class="mini">
         <div class="h"><b>Factură</b><span>AG 2027-06<br>1 iulie 2027</span></div>
         <div class="r"><span>28 de articole</span><span>12,99 €</span></div>
@@ -297,13 +297,13 @@ body.nobudget .strip .n{color:#777}
       <div><span class="n">03</span><h3>Păstrează-ți abonamentul</h3><p>Lasă reclamele pornite pe site-urile pe care le iubești. Presa lucrează la reclame care să nu-ți mai stea în cale.</p></div>
     </div>
   </div>
-  <footer><span>Abonamentul gratuit · concept de campanie, proiect studențesc (AdVenture 2027)</span><span>Cifrele sunt estimări, pentru ilustrare.</span></footer>
+  <footer><span>Abonamentul gratis · Parepa Rebecca, Stoica Alin, Stoicescu Daria, Todiroi Ryanna</span><span>Cifrele sunt estimări, pentru ilustrare.</span></footer>
 </section>
 
 <!-- ================= QUIZ ================= -->
 <section id="quiz" class="screen" aria-label="Ce ai folosit gratis">
   <div class="top">
-    <span class="logo"><span class="pill">Abonamentul</span><i>gratuit</i></span>
+    <span class="logo"><span class="pill">Abonamentul</span><i>gratis</i></span>
     <small id="stepLbl">Pasul 1 din 2</small>
   </div>
   <div class="quiz">
@@ -332,7 +332,7 @@ body.nobudget .strip .n{color:#777}
 <!-- ================= INVOICE ================= -->
 <section id="invoice" class="screen" aria-label="Factura ta">
   <div class="top">
-    <span class="logo"><span class="pill">Abonamentul</span><i>gratuit</i></span>
+    <span class="logo"><span class="pill">Abonamentul</span><i>gratis</i></span>
     <small>Factura ta pe iunie</small>
   </div>
   <div class="sheet" id="sheet"></div>
@@ -430,13 +430,13 @@ function build(){
   $("sheet").classList.remove("print");
   $("sheet").innerHTML = `
     <div class="sh-head" ${d()}>
-      <div><span class="logo"><span class="pill">Abonamentul</span><i>gratuit</i></span>
+      <div><span class="logo"><span class="pill">Abonamentul</span><i>gratis</i></span>
         <div class="addr">Furnizor: presa din Europa<br>site-uri de știri, video, muzică, podcasturi, reviste</div></div>
       <div class="ttl"><b>Factură</b><span>Seria și nr.: ${nr}</span><span>Data emiterii: 1 iulie 2027</span><span>Perioada: 1–30 iunie 2027</span></div>
     </div>
     <div class="parties" ${d()}>
       <div><small>Client</small><b>${name}</b><span>Tip de abonat: ${top.persona}</span></div>
-      <div><small>Abonament</small><b>Gratuit, nelimitat</b><span>Stare: activ ✓</span></div>
+      <div><small>Abonament</small><b>Gratis, nelimitat</b><span>Stare: activ ✓</span></div>
     </div>
     <div class="lines">
       <div class="lh" ${d()}><span>Ce ai primit în iunie</span><span>Ar fi costat</span><span>De plată</span></div>
@@ -460,13 +460,13 @@ $("shareBtn").onclick = () => {
   $("storyCard").innerHTML = `
     <div class="bill">
       <div class="k">Factura mea pe iunie</div>
-      <h4>Abonamentul meu gratuit</h4>
+      <h4>Abonamentul meu gratis</h4>
       ${vals.slice(0,4).map(v => `<div class="r"><span>${fmt(v.v)} ${de(v.v)}${v.unit}</span><span>${eur2(v.sub)}</span></div>`).join("")}
       <div class="tot"><span>De plată</span><b>0,00&nbsp;€</b></div>
       <div class="stamp">ACHITAT<small>prin reclame</small></div>
     </div>
     <div class="tagl">Mi-au plătit reclamele ${eur2(total)}.<br>Nu-mi anulez abonamentul.</div>
-    <div class="hash">#AbonamentulGratuit</div>`;
+    <div class="hash">#AbonamentulGratis</div>`;
   $("saveBtn").textContent = "Salvează imaginea";
   $("shareM").hidden = false;
 };
