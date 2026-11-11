@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chestionar (30 de secunde)</title>
+<style>
+/* Teaser questionnaire, "zero budget" on purpose: default fonts, grey, native form controls, a yellow note banner. */
+:root{--txt:#222;--grey:#555;--light:#888;--line:#bbb;--btn:#e4e4e4;--note:#FFF3B0;--link:#0000EE}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--txt);font-family:"Times New Roman",Times,serif;-webkit-text-size-adjust:100%}
+.banner{background:var(--note);border-bottom:1px dashed #999;padding:10px 16px;font:14px/1.4 "Comic Sans MS","Comic Sans",cursive;color:#333;text-align:center}
+main{max-width:640px;margin:0 auto;padding:22px 18px 40px}
+h1{font-weight:400;font-size:30px;margin:0 0 6px}
+.meta{font:14px Arial,Helvetica,sans-serif;color:var(--light);margin:0 0 22px}
+fieldset{border:1px solid var(--line);margin:0 0 16px;padding:12px 14px 10px}
+legend{font-size:19px;padding:0 6px}
+label{display:flex;align-items:center;gap:8px;font:16px Arial,Helvetica,sans-serif;padding:6px 0}
+input[type=radio]{width:17px;height:17px;margin:0}
+.err{font:14px Arial,Helvetica,sans-serif;color:#b00;min-height:18px;margin:4px 0 10px}
+button{font:16px Arial,Helvetica,sans-serif;background:var(--btn);border:1px solid var(--light);border-radius:0;padding:10px 18px;color:#333;cursor:pointer}
+.small{font:13px Arial,Helvetica,sans-serif;color:var(--light);margin-top:10px}
+#result h2{font-weight:400;font-size:28px;margin:0 0 14px}
+#result p{font-size:18px;line-height:1.45;margin:0 0 12px}
+#result .teaser{border-top:1px solid var(--line);padding-top:14px;margin-top:18px}
+#result .teaser b{font-weight:400;font-size:24px;display:block;margin-bottom:6px}
+.foot{display:flex;justify-content:space-between;align-items:center;margin-top:26px;font:13px Arial,Helvetica,sans-serif;color:#999}
+.logo{border:1px dashed var(--line);padding:6px 10px}
+a{color:var(--link)}
+</style>
+</head>
+<body>
+<div class="banner">Varianta „Fără buget” a acestui chestionar: fără designer, fără culori, fără animații.</div>
+<main>
+  <form id="form" novalidate>
+    <h1>Chestionar (30 de secunde)</h1>
+    <p class="meta">4 întrebări. Fără cont. Nu salvăm nimic.</p>
+
+    <fieldset><legend>1. Câte site-uri de știri citești gratis într-o săptămână?</legend>
+      <label for="q1a"><input type="radio" name="q1" id="q1a" value="0">niciunul</label>
+      <label for="q1b"><input type="radio" name="q1" id="q1b" value="1">1–2</label>
+      <label for="q1c"><input type="radio" name="q1" id="q1c" value="3">3–5</label>
+      <label for="q1d"><input type="radio" name="q1" id="q1d" value="6">mai mult de 5</label>
+    </fieldset>
+
+    <fieldset><legend>2. Câte abonamente plătești deja? (streaming, muzică, sală, cloud…)</legend>
+      <label for="q2a"><input type="radio" name="q2" id="q2a" value="0">niciunul</label>
+      <label for="q2b"><input type="radio" name="q2" id="q2b" value="1">1–2</label>
+      <label for="q2c"><input type="radio" name="q2" id="q2c" value="3">3 sau mai multe</label>
+    </fieldset>
+
+    <fieldset><legend>3. Folosești ad blocker?</legend>
+      <label for="q3a"><input type="radio" name="q3" id="q3a" value="da">da</label>
+      <label for="q3b"><input type="radio" name="q3" id="q3b" value="nu">nu</label>
+      <label for="q3c"><input type="radio" name="q3" id="q3c" value="nustiu">nu știu ce e ăla</label>
+    </fieldset>
+
+    <fieldset><legend>4. Cine crezi că plătește știrile pe care le citești gratis?</legend>
+      <label for="q4a"><input type="radio" name="q4" id="q4a" value="nimeni">nimeni, sunt gratis</label>
+      <label for="q4b"><input type="radio" name="q4" id="q4b" value="statul">statul</label>
+      <label for="q4c"><input type="radio" name="q4" id="q4c" value="reclamele">reclamele</label>
+      <label for="q4d"><input type="radio" name="q4" id="q4d" value="jurnalistii">jurnaliștii, din pasiune</label>
+    </fieldset>
+
+    <div class="err" id="err" aria-live="polite"></div>
+    <button type="submit" id="send">Trimite răspunsurile</button>
+    <p class="small">Butonul e gri pentru că n-am avut buget de altă culoare.</p>
+  </form>
+
+  <section id="result" hidden aria-live="polite"></section>
+
+  <div class="foot"><span class="logo">[ logo ]</span><span>#AbonamentulGratuit</span></div>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const val = n => { const x = document.querySelector(`input[name="${n}"]:checked`); return x ? x.value : null; };
+$("form").addEventListener("submit", e => {
+  e.preventDefault();
+  const a = {q1: val("q1"), q2: val("q2"), q3: val("q3"), q4: val("q4")};
+  if (Object.values(a).some(v => v === null)){ $("err").textContent = "Mai ai o întrebare fără răspuns. Durează doar câteva secunde."; return; }
+  const news = {"0": "Chiar dacă nu citești site-uri de știri", "1": "Cele 1–2 site-uri de știri pe care le citești", "3": "Cele 3–5 site-uri de știri pe care le citești", "6": "Cele peste 5 site-uri de știri pe care le citești"}[a.q1];
+  const pays = a.q4 === "reclamele"
+    ? `Ai ghicit. ${news === "Chiar dacă nu citești site-uri de știri" ? "Știrile gratuite" : news} sunt plătite în mare parte de reclame.`
+    : a.q1 === "0"
+      ? "De fapt, știrile gratuite sunt plătite în mare parte de reclame. Doar cam unul din șase europeni plătește pentru știri."
+      : `De fapt, ${news.charAt(0).toLowerCase() + news.slice(1)} sunt plătite în mare parte de reclame. Doar cam unul din șase europeni plătește pentru știri.`;
+  const subs = {"0": "Ai spus că nu plătești niciun abonament.", "1": "Ai spus că plătești 1–2 abonamente.", "3": "Ai spus că plătești 3 sau mai multe abonamente."}[a.q2];
+  const blocker = a.q3 === "da" ? " Și, pentru că folosești ad blocker, s-ar putea să-l fi anulat deja." : a.q3 === "nustiu" ? " Iar un ad blocker îl poate anula fără să-ți dai seama." : "";
+  $("form").hidden = true;
+  $("result").hidden = false;
+  $("result").innerHTML = `
+    <h2>Mulțumim!</h2>
+    <p>${pays}</p>
+    <p>${subs} De fapt, ${a.q2 === "0" ? "ai unul" : "mai ai unul"}. Nu l-ai cerut și nu plătești nimic pentru el.${blocker}</p>
+    <div class="teaser"><b>Ce abonament?</b><p>Afli pe 18 iunie. Dacă găsim buget.</p></div>`;
+  window.scrollTo(0, 0);
+});
+document.querySelectorAll("input").forEach(i => i.addEventListener("change", () => $("err").textContent = ""));
+</script>
+</body>
+</html>

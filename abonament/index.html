@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abonamentul gratuit · pagina abonamentului</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* The free subscription on one screen (for the Big Idea slide): membership card, ad blocker switch,
+   what's included, price, terms. Same look as the campaign site. Fits 1920x1080; stacks on phones. */
+:root{--blue:#1E3BCB;--blued:#142A9E;--coral:#FF6B4A;--pink:#FF9EC4;--pinkl:#FFE3EE;--white:#FFFFFF;
+  --disp:"Bricolage Grotesque",system-ui,sans-serif;--sans:"Inter",system-ui,-apple-system,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;color-scheme:light}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--pinkl);color:var(--blue);font-family:var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+button:focus-visible{outline:3px solid var(--coral);outline-offset:3px}
+[hidden]{display:none!important}
+.wm{font:800 22px var(--disp);letter-spacing:-.02em;display:inline-flex;align-items:center;gap:7px}
+.wm i{font-style:normal;background:var(--coral);color:#fff;border-radius:999px;padding:1px 11px 3px;font-size:.8em}
+.btn{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:11px 18px;font:700 14.5px var(--sans)}
+.btn.c{background:var(--coral);color:#fff}
+.kick{font:700 13px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--coral)}
+
+header{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px clamp(20px,4vw,64px)}
+header small{font:600 13.5px var(--sans);opacity:.7}
+main{flex:1;display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:clamp(28px,4vw,64px);align-items:center;padding:10px clamp(20px,4vw,64px) 40px;max-width:1800px;width:100%;margin:0 auto}
+h1{font:800 clamp(38px,3.3vw,56px)/.98 var(--disp);letter-spacing:-.04em;margin:12px 0 28px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--coral);display:block}
+
+/* membership card */
+.mcard{position:relative;max-width:470px;background:linear-gradient(150deg,#3956E6,var(--blue) 50%,var(--blued));color:#fff;border-radius:26px;padding:26px 26px 24px;box-shadow:0 30px 60px rgba(20,42,158,.35);transform:rotate(-2deg);transition:filter .35s,transform .35s;overflow:hidden}
+.mcard::after{content:"";position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:50%;background:rgba(255,158,196,.35)}
+.mcard .row1{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+.mcard .row1 .wm{font-size:20px}
+.status{font:700 12px var(--sans);letter-spacing:.1em;background:#fff;color:var(--blue);border-radius:999px;padding:5px 11px;display:inline-flex;align-items:center;gap:6px}
+.status i{width:8px;height:8px;border-radius:50%;background:var(--coral)}
+.mcard dl{margin-top:22px;display:grid;grid-template-columns:auto 1fr;gap:9px 18px;font:500 15px var(--mono);position:relative;z-index:1}
+.mcard dt{opacity:.7}
+.mcard dd{font-weight:600}
+.mcard .num{margin-top:22px;font:600 17px var(--mono);letter-spacing:.14em;opacity:.9;position:relative;z-index:1}
+body.off .mcard{filter:grayscale(1) brightness(.9);transform:rotate(0)}
+body.off .status i{background:#999}
+.mcard s{opacity:.7}
+.switch{max-width:470px;margin-top:26px;display:flex;align-items:center;justify-content:space-between;gap:14px;background:#fff;border-radius:18px;padding:14px 16px;box-shadow:0 10px 24px rgba(30,59,203,.1)}
+.switch b{display:block;font:700 15.5px var(--sans)}
+.switch small{font-size:13.5px;opacity:.75}
+.tg{width:56px;height:32px;border-radius:999px;background:#d6d9ea;position:relative;flex:none;transition:background .2s}
+.tg::after{content:"";position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:left .2s}
+.tg[aria-checked="true"]{background:var(--coral)}
+.tg[aria-checked="true"]::after{left:28px}
+.cancel{max-width:470px;margin-top:12px;background:#fff;border:2.5px solid var(--coral);border-radius:20px;padding:16px 18px 14px;animation:pop .25s ease-out}
+@keyframes pop{from{transform:scale(.96);opacity:0}}
+.cancel h3{font:800 20px/1.1 var(--disp)}
+.cancel p{font:500 14.5px/1.45 var(--sans);color:#222;margin:8px 0 12px}
+.cancel .acts{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.cancel .link{font:600 14px var(--sans);text-decoration:underline;opacity:.65}
+.hint{margin-top:14px;font:600 13.5px var(--sans);opacity:.7}
+
+/* right side: plan */
+.plan{background:#fff;border-radius:28px;padding:clamp(22px,2.4vw,34px);box-shadow:0 20px 50px rgba(30,59,203,.1)}
+.plan h2{font:800 clamp(26px,2.2vw,34px)/1 var(--disp);letter-spacing:-.03em;margin-top:8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.tile{background:var(--pinkl);border-radius:18px;padding:14px 14px;display:grid;grid-template-columns:40px 1fr auto;gap:12px;align-items:center;transition:opacity .3s}
+.tile .ic{width:40px;height:40px;border-radius:12px;background:#fff;display:grid;place-items:center}
+.tile .ic svg{width:21px;height:21px;stroke:var(--blue);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tile b{display:block;font:700 15.5px var(--sans)}
+.tile small{font:500 12.5px/1.3 var(--sans);opacity:.75}
+.ok{font:700 11.5px var(--sans);letter-spacing:.06em;background:var(--blue);color:#fff;border-radius:999px;padding:4px 9px}
+body.off .tile{opacity:.5}
+body.off .tile b{text-decoration:line-through}
+body.off .ok{background:#999}
+body.off .price{background:#8a8fa8}
+body.off .price b{color:#fff}
+.price{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px 28px;align-items:baseline;background:var(--blue);color:#fff;border-radius:18px;padding:16px 22px;font:600 16px var(--sans)}
+.price b{font:800 34px var(--disp);letter-spacing:-.02em;color:var(--pink);margin-left:8px}
+.price span:last-child{font-size:14px;opacity:.85}
+.terms{margin-top:18px;border:2.5px solid var(--blue);border-radius:20px;padding:18px 20px 16px;box-shadow:8px 8px 0 var(--pink)}
+.terms h3{font:700 13.5px var(--mono);letter-spacing:.06em}
+.cols{display:grid;grid-template-columns:.8fr 1.2fr;gap:20px;margin-top:10px}
+.who{font:700 12px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--coral)}
+.terms ol{margin:6px 0 0 18px;display:grid;gap:5px;font:500 13.5px/1.4 var(--mono);color:#222}
+footer{padding:0 clamp(20px,4vw,64px) 22px;font:500 12.5px var(--sans);opacity:.6}
+
+
+/* "No budget" toggle + the glitch intro (same as the campaign site) */
+.nbrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:18px}
+.nb-cta{display:inline-flex;align-items:center;gap:12px;background:var(--pink);color:var(--blue);font:700 15.5px var(--sans);border-radius:999px;padding:9px 20px 9px 9px;animation:glow 2.2s infinite}
+.nb-cta .sw{width:46px;height:26px;border-radius:999px;background:var(--blue);position:relative;flex:none;transition:background .2s}
+.nb-cta .sw::after{content:"";position:absolute;top:3px;left:23px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .2s}
+.nb-cta[aria-pressed="true"] .sw{background:#888}
+.nb-cta[aria-pressed="true"] .sw::after{left:3px}
+@keyframes glow{0%{box-shadow:0 0 0 0 rgba(255,158,196,.8)}70%{box-shadow:0 0 0 16px rgba(255,158,196,0)}100%{box-shadow:0 0 0 0 rgba(255,158,196,0)}}
+.nb-hint{font:italic 600 14.5px var(--sans);color:var(--coral)}
+.nb-banner{display:none;background:#FFF3B0;color:#333;border-bottom:1px dashed #999;padding:10px 20px;font:15px/1.4 "Comic Sans MS","Comic Sans",cursive;text-align:center}
+.nb-banner button{font:inherit;text-decoration:underline;font-weight:700}
+.nbph{display:none;max-width:470px;border:2px dashed #aaa;color:#888;font:15px/1.5 Arial,Helvetica,sans-serif;text-align:center;padding:70px 20px}
+body.nobudget{background:#fff;color:#333}
+body.nobudget *{font-family:"Times New Roman",Times,serif!important;letter-spacing:0!important;text-shadow:none!important;animation:none!important;transition:none!important;box-shadow:none!important}
+body.nobudget .nb-banner{display:block}
+body.nobudget .nb-banner,body.nobudget .nb-banner *{font-family:"Comic Sans MS","Comic Sans",cursive!important}
+body.nobudget .wm i,body.nobudget .ok{background:#ccc!important;color:#333!important;border-radius:0!important}
+body.nobudget h1,body.nobudget h2,body.nobudget .price b{font-weight:400!important;color:#222!important}
+body.nobudget h1{font-size:clamp(30px,2.8vw,46px)!important;line-height:1.15!important}
+body.nobudget h1 em{color:inherit!important}
+body.nobudget .kick,body.nobudget .nb-hint,body.nobudget .who,body.nobudget .hint{color:#666!important}
+body.nobudget .nb-cta,body.nobudget .btn{background:#e4e4e4!important;color:#333!important;border:1px solid #888!important;border-radius:0!important;font-weight:400!important}
+body.nobudget .plan,body.nobudget .tile,body.nobudget .terms{background:#fff!important;border:1px solid #ccc!important;border-radius:0!important;color:#333!important}
+body.nobudget .price{background:#eee!important;color:#333!important;border-radius:0!important}
+body.nobudget .tile{grid-template-columns:1fr auto!important}
+body.nobudget .hint,body.nobudget .tile .ic,body.nobudget .mcard,body.nobudget .switch,body.nobudget .cancel{display:none!important}
+body.nobudget .terms h3,body.nobudget .terms ol,body.nobudget .tile b,body.nobudget .tile small{color:#333!important}
+body.nobudget .nbph{display:block}
+.glitch-ov{position:fixed;inset:0;z-index:95;pointer-events:none;display:none}
+.glitch-ov.on{display:block}
+body .glitch-ov.on::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(20,20,40,.22) 0 2px,transparent 2px 4px);animation:scan .14s steps(2) infinite!important}
+@keyframes scan{50%{transform:translateY(2px)}}
+.glitch-ov i{position:absolute;left:0;right:0;top:var(--y);height:var(--h);background:var(--c);transform:translateX(var(--x));opacity:.9;mix-blend-mode:multiply}
+.glitch-ov b{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%) translateX(var(--x));font:800 clamp(28px,5vw,64px)/1 "Bricolage Grotesque",sans-serif!important;color:#fff;letter-spacing:-.02em;white-space:nowrap;text-shadow:4px 0 0 #FF6B4A,-4px 0 0 #1E3BCB!important}
+body.glitching > :not(.glitch-ov):not(script){animation:jit .11s steps(2) infinite!important;filter:drop-shadow(5px 0 0 rgba(255,107,74,.75)) drop-shadow(-5px 0 0 rgba(30,59,203,.75))}
+@keyframes jit{0%{transform:translate(0,0)}25%{transform:translate(-8px,2px) skewX(-3deg)}50%{transform:translate(7px,-3px)}75%{transform:translate(-4px,1px) skewX(2deg)}100%{transform:translate(5px,0)}}
+@media(max-width:900px){
+  main{grid-template-columns:minmax(0,1fr)}
+  .mcard,.switch,.cancel{max-width:none}
+}
+@media(max-width:560px){
+  .grid{grid-template-columns:1fr}
+  .cols{grid-template-columns:1fr;gap:10px}
+  header small{display:none}
+}
+@media(min-width:1600px) and (min-height:950px){body{zoom:1.12;min-height:calc(100vh / 1.12)}}
+@media(max-width:560px){.mcard .num{font-size:14.5px;letter-spacing:.06em}.mcard dl{font-size:14px;gap:8px 12px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="nb-banner" id="nbBanner"><span id="nbText">Te uiți la varianta „Fără buget” a acestei pagini: fără reclame, fără buget, fără design.</span> <button id="nbOff">Adu reclamele înapoi</button></div>
+<div class="glitch-ov" id="glitch" aria-hidden="true"></div>
+<header><span class="wm">Abonamentul <i>gratuit</i></span><small>Contul tău · Abonament</small></header>
+
+<main>
+  <section aria-label="Cardul de membru">
+    <div class="kick">Abonamentul tău</div>
+    <h1 id="h1">Ai deja un abonament. <em>Nu l‑ai cerut și nu‑l plătești.</em></h1>
+    <div class="nbph">[ imagine indisponibilă ]<br><br>n‑am avut buget de un card de membru.</div>
+    <div class="mcard" aria-live="polite">
+      <div class="row1"><span class="wm">Abonamentul <i>gratuit</i></span><span class="status"><i></i><span id="stat">ACTIV</span></span></div>
+      <dl>
+        <dt>Titular</dt><dd>tu</dd>
+        <dt>Membru din</dt><dd>prima zi pe internet</dd>
+        <dt>Include</dt><dd>știri, video, muzică, podcasturi</dd>
+        <dt>Preț</dt><dd>0 € / lună</dd>
+        <dt>Plătit de</dt><dd id="payer">reclame</dd>
+      </dl>
+      <div class="num">0000 · 0000 · 0000 · 2027</div>
+    </div>
+    <div class="switch"><div><b>Ad blocker</b><small id="swTxt">Oprit. Abonamentul e activ.</small></div><button class="tg" id="tg" role="switch" aria-checked="false" aria-label="Pornește sau oprește ad blocker-ul"></button></div>
+    <div class="cancel" id="cancel" hidden>
+      <h3 id="cTitle">Ești sigur că vrei să-ți anulezi abonamentul?</h3>
+      <p id="cText">Pierzi știrile, video-urile și muzica pe care le folosești gratis. Și jurnaliștii care verifică ce citești.</p>
+      <div class="acts" id="cActs"><button class="btn c" id="keepBtn">Păstrează abonamentul</button><button class="link" id="cancelBtn">Anulează oricum</button></div>
+    </div>
+    <p class="hint" id="hint">Încearcă butonul „Ad blocker”: vezi ce se întâmplă când îl pornești.</p>
+    <div class="nbrow"><button class="nb-cta" id="nb" aria-pressed="false"><span class="sw"></span><span class="lb">Vezi pagina fără reclame</span></button><span class="nb-hint" id="nbHint">…și vezi cum ar arăta fără bani din reclame.</span></div>
+  </section>
+
+  <section class="plan" aria-label="Ce include abonamentul">
+    <div class="kick">Ce include</div>
+    <h2 id="h2">Tot ce folosești gratis. Inclus.</h2>
+    <div class="grid">
+      <div class="tile"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 5h13v14H6a2 2 0 0 1-2-2V5z"/><path d="M17 9h3v8a2 2 0 0 1-2 2"/><path d="M8 9h5M8 13h5"/></svg></span><div><b>Știri</b><small>site-urile pe care le citești zilnic</small></div><span class="ok">inclus</span></div>
+      <div class="tile"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9l5 3-5 3z"/></svg></span><div><b>Video</b><small>clipuri, emisiuni, rezumate</small></div><span class="ok">inclus</span></div>
+      <div class="tile"><span class="ic"><svg viewBox="0 0 24 24"><path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg></span><div><b>Muzică</b><small>varianta gratuită, cu reclame</small></div><span class="ok">inclus</span></div>
+      <div class="tile"><span class="ic"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span><div><b>Podcasturi</b><small>în trafic, la sală</small></div><span class="ok">inclus</span></div>
+      <div class="tile"><span class="ic"><svg viewBox="0 0 24 24"><path d="M6 3v8a3 3 0 0 0 6 0V3M9 3v18M17 3c-2 2-2 6 0 8v10"/></svg></span><div><b>Rețete</b><small>pentru cina de diseară</small></div><span class="ok">inclus</span></div>
+      <div class="tile"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg></span><div><b>Vreme și hărți</b><small>prognoza și drumul cel mai scurt</small></div><span class="ok">inclus</span></div>
+    </div>
+    <div class="price"><span>Preț pentru tine:<b>0&nbsp;€</b></span><span>Plătit de:<b id="payer2">reclame</b></span><span>Fără contract, fără card, fără parolă.</span></div>
+    <div class="terms">
+      <h3>TERMENII ABONAMENTULUI</h3>
+      <div class="cols">
+        <div><div class="who">Tu</div><ol><li>Lași reclamele pornite pe site-urile pe care le iubești.</li></ol></div>
+        <div><div class="who">Presa europeană</div><ol start="2"><li>Folosește reclame care nu acoperă textul.</li><li>Face pagini care se încarcă repede.</li><li>Marchează clar reclamele și îți cere voie pentru date.</li></ol></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>Abonamentul gratuit · concept de campanie, proiect studențesc (AdVenture 2027)</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+function setBlock(on){
+  document.body.classList.toggle("off", on);
+  $("tg").setAttribute("aria-checked", on);
+  $("stat").textContent = on ? "ANULAT" : "ACTIV";
+  $("payer").innerHTML = on ? "<s>reclame</s> nimeni" : "reclame";
+  $("payer2").textContent = on ? "nimeni" : "reclame";
+  document.querySelectorAll(".ok").forEach(x => x.textContent = on ? "anulat" : "inclus");
+  $("swTxt").textContent = on ? "Pornit. Abonamentul se anulează." : "Oprit. Abonamentul e activ.";
+  $("cancel").hidden = !on; $("hint").hidden = on;
+  $("cActs").hidden = false;
+  $("cTitle").textContent = "Ești sigur că vrei să-ți anulezi abonamentul?";
+  $("cText").textContent = "Pierzi știrile, video-urile și muzica pe care le folosești gratis. Și jurnaliștii care verifică ce citești.";
+  $("keepBtn").textContent = "Păstrează abonamentul";
+  $("cancelBtn").hidden = false;
+}
+$("tg").onclick = () => setBlock($("tg").getAttribute("aria-checked") !== "true");
+$("keepBtn").onclick = () => setBlock(false);
+$("cancelBtn").onclick = () => {
+  $("cTitle").textContent = "Abonament anulat.";
+  $("cText").textContent = "Nimic din lista din dreapta nu mai e inclus. Site-urile pe care le citești rămân fără banii din reclame.";
+  $("cancelBtn").hidden = true; $("keepBtn").textContent = "Reactivează abonamentul";
+  setTimeout(() => noBudget(true), 1200);
+};
+
+// "No budget" version of the page: what media looks like without ad money
+const H1_ORIG = $("h1").innerHTML, H2_ORIG = $("h2").innerHTML;
+function noBudget(on, quiet){
+  document.body.classList.toggle("nobudget", on);
+  $("nb").setAttribute("aria-pressed", on);
+  $("nb").querySelector(".lb").textContent = on ? "Adu reclamele înapoi" : "Vezi pagina fără reclame";
+  $("nbHint").textContent = on ? "Asta e pagina fără bani din reclame. Nu prea arată bine, nu?" : "…și vezi cum ar arăta fără bani din reclame.";
+  $("h1").innerHTML = on ? "ai un abonament gratuit. (scuze, n‑am avut buget de un titlu mai bun)" : H1_ORIG;
+  $("h2").innerHTML = on ? "tot ce folosești gratis. inclus." : H2_ORIG;
+  if (quiet) return;
+  if (!on) setBlock(false);
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+$("nb").onclick = () => noBudget(!document.body.classList.contains("nobudget"));
+$("nbOff").onclick = () => noBudget(false);
+
+// intro, same as the campaign site: funded → glitch → no budget → glitch → funded
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+async function glitch(ms, toNoBudget){
+  const ov = $("glitch"), cols = ["#FF6B4A", "#1E3BCB", "#FF9EC4", "#FFE3EE", "#888", "#222"];
+  const words = toNoBudget ? ["SEMNAL PIERDUT…", "BUGET: 0 €"] : ["SE ÎNCARCĂ BUGETUL…", "ABONAMENT ACTIV ✓"];
+  const r = (a, b) => a + Math.random() * (b - a);
+  ov.classList.add("on"); document.body.classList.add("glitching");
+  const t0 = performance.now();
+  while (performance.now() - t0 < ms){
+    const k = (performance.now() - t0) / ms;
+    const showTarget = Math.random() < .15 + k * .75;
+    noBudget(toNoBudget ? showTarget : !showTarget, true);
+    ov.innerHTML = Array.from({length:7}, () => `<i style="--y:${r(0, 96).toFixed(1)}%;--h:${r(1, 11).toFixed(1)}%;--x:${r(-60, 60).toFixed(0)}px;--c:${cols[Math.floor(r(0, cols.length))]}"></i>`).join("")
+      + (Math.random() < .45 ? `<b style="--x:${r(-30, 30).toFixed(0)}px">${words[Math.random() < .5 ? 0 : 1]}</b>` : "");
+    await wait(65 + Math.random() * 45);
+  }
+  ov.classList.remove("on"); ov.innerHTML = ""; document.body.classList.remove("glitching");
+}
+async function intro(){
+  await wait(2600);
+  $("nbText").textContent = "Fără bani din reclame, pagina asta ar arăta așa…";
+  $("nbOff").hidden = true;
+  if (!RM) await glitch(1000, true);
+  noBudget(true, true);
+  await wait(2800);
+  if (!RM) await glitch(1000, false);
+  noBudget(false, true);
+  $("nbText").textContent = "Te uiți la varianta „Fără buget” a acestei pagini: fără reclame, fără buget, fără design.";
+  $("nbOff").hidden = false;
+}
+
+// direct links for slides: #activ, #anulat, #fara-buget (no intro)
+const H = location.hash;
+if (H === "#anulat") setBlock(true);
+else if (H === "#fara-buget") noBudget(true, true);
+else if (H !== "#activ") intro();
+</script>
+</body>
+</html>
